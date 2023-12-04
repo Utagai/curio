@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Pacifico } from "next/font/google";
+
+const pacificoFont = Pacifico({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-pacifico",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-900 text-white">{children}</body>
+      <body className={`${pacificoFont.variable} bg-gray-900 text-white`}>
+        {children}
+      </body>
     </html>
   );
 }
