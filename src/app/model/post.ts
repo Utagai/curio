@@ -1,4 +1,4 @@
-import { Difficulty } from "../Difficulty";
+import { Difficulty } from "./difficulty";
 
 export type Post = {
   id: string;

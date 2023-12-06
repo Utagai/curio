@@ -1,4 +1,4 @@
-import { Difficulty } from "../Difficulty";
+import { Difficulty } from "../model/difficulty";
 import { Post } from "../model/post";
 
 // Yeah, just play along for now.

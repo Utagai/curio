@@ -1,8 +1,4 @@
-export enum Difficulty {
-  EASY = "easy",
-  MEDIUM = "medium",
-  HARD = "hard",
-}
+import { Difficulty } from "./model/difficulty";
 
 export default function DifficultyLabel(props: { diff: Difficulty }) {
   return (
