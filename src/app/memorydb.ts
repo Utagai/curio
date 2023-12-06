@@ -2,7 +2,7 @@ import { Difficulty } from "./difficulty";
 import { Post } from "./post";
 
 // Yeah, just play along for now.
-const postDB: Post[] = [
+const postTable: Post[] = [
   {
     id: "1",
     title: "Talk That Talk",
@@ -29,10 +29,41 @@ const postDB: Post[] = [
   },
 ];
 
+const submissionTable: Submission[] = [
+  {
+    id: "1",
+    postId: "1",
+    submittedBy: "tsosis",
+    message: "This is a submission",
+    imageUri: "https://source.unsplash.com/random/400x200",
+    date: new Date("December 2, 2023"),
+  },
+  {
+    id: "2",
+    postId: "1",
+    submittedBy: "Hippo Campus",
+    message: "This is a submission as well",
+    imageUri: "https://source.unsplash.com/random/400x200",
+    date: new Date("December 3, 2023"),
+  },
+  {
+    id: "3",
+    postId: "2",
+    submittedBy: "tsosis",
+    message: "This is a submission yet again",
+    imageUri: "https://source.unsplash.com/random/400x200",
+    date: new Date("November 18, 2023"),
+  },
+];
+
 export function allPosts(): Post[] {
-  return postDB;
+  return postTable;
 }
 
 export function getPostById(id: string): Post | undefined {
-  return postDB.find((post) => post.id === id);
+  return postTable.find((post) => post.id === id);
+}
+
+export function getSubmissionsForPost(id: string): Submission[] {
+  return submissionTable.filter((submission) => submission.postId === id);
 }
