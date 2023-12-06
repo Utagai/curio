@@ -7,7 +7,9 @@ export default function Post() {
         <div className="mb-6">
           <h2 className="text-3xl mb-2">
             Title <span className="text-sm text-gray-400">by Bob</span>
-            <DifficultyLabel diff={Difficulty.MEDIUM} />
+            <span className="p-2">
+              <DifficultyLabel diff={Difficulty.MEDIUM} />
+            </span>
           </h2>
         </div>
 
