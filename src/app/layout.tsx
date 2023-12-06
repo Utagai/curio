@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Pacifico } from "next/font/google";
+import NavBar from "./navbar";
 
 const pacificoFont = Pacifico({
   weight: "400",
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${pacificoFont.variable} bg-gray-900 text-white`}>
+        <NavBar />
         {children}
       </body>
     </html>

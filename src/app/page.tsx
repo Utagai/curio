@@ -1,10 +1,8 @@
 import DifficultyLabel, { Difficulty } from "./difficulty";
-import NavBar from "./navbar";
 
 export default function Home() {
   return (
     <>
-      <NavBar />
       <main className="p-4 m-8">
         <div className="mb-6">
           <h2 className="text-3xl mb-2">
