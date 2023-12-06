@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import DifficultyLabel, { Difficulty } from "../../Difficulty";
-import { getPostById, getSubmissionsForPost } from "../../memorydb";
+import { getPostById, getSubmissionsForPost } from "../../db/memory";
 import Submission from "./Submission";
 
 export default function Post({ params }: { params: { id: string } }) {

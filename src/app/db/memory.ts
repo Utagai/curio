@@ -1,5 +1,5 @@
-import { Difficulty } from "./Difficulty";
-import { Post } from "./post";
+import { Difficulty } from "../Difficulty";
+import { Post } from "../model/post";
 
 // Yeah, just play along for now.
 const postTable: Post[] = [

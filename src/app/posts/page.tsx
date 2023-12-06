@@ -1,5 +1,5 @@
 import { Difficulty } from "../Difficulty";
-import { allPosts } from "../memorydb";
+import { allPosts } from "../db/memory";
 import PostCard from "./PostCard";
 
 export default function Posts() {
