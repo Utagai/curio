@@ -7,10 +7,10 @@ export default function Post({ params }: { params: { id: string } }) {
   const post = getPostById(params.id)!;
   return (
     <>
-      <main className="p-4 m-8">
+      <main className="py-8 px-32 m-8">
         <div className="mb-6">
           <h2 className="text-3xl mb-2">
-            {post.title}{" "}
+            <span className="italic">{post.title} </span>
             <span className="text-sm text-gray-400">by {post.author}</span>
             <span className="p-2">
               <DifficultyLabel diff={post.difficulty} />
