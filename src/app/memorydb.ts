@@ -1,4 +1,4 @@
-import { Difficulty } from "./difficulty";
+import { Difficulty } from "./Difficulty";
 import { Post } from "./post";
 
 // Yeah, just play along for now.

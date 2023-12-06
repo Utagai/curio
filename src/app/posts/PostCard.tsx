@@ -1,4 +1,4 @@
-import DifficultyLabel, { Difficulty } from "../difficulty";
+import DifficultyLabel, { Difficulty } from "../Difficulty";
 
 export default function PostCard(props: {
   id: string;

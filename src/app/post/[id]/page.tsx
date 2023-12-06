@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import DifficultyLabel, { Difficulty } from "../../difficulty";
+import DifficultyLabel, { Difficulty } from "../../Difficulty";
 import { getPostById, getSubmissionsForPost } from "../../memorydb";
 import Submission from "./Submission";
 
