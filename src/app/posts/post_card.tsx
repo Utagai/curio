@@ -8,7 +8,7 @@ export default function PostCard(props: {
   difficulty: Difficulty;
 }) {
   return (
-    <a href={`/post`}>
+    <a href={`/post/${props.id}`}>
       <button className="bg-green text-left rounded-lg overflow-hidden card-shadow transform transition-transform duration-500 hover:scale-105">
         <img src={props.imageUri} alt="preview image" className="w-full" />
         <div className="p-4">

@@ -1,14 +1,18 @@
-import DifficultyLabel, { Difficulty } from "../difficulty";
+import { useRouter } from "next/navigation";
+import DifficultyLabel, { Difficulty } from "../../difficulty";
+import { getPostById } from "../../memorydb";
 
-export default function Post() {
+export default function Post({ params }: { params: { id: string } }) {
+  const post = getPostById(params.id)!;
   return (
     <>
       <main className="p-4 m-8">
         <div className="mb-6">
           <h2 className="text-3xl mb-2">
-            Title <span className="text-sm text-gray-400">by Bob</span>
+            {post.title}{" "}
+            <span className="text-sm text-gray-400">by {post.author}</span>
             <span className="p-2">
-              <DifficultyLabel diff={Difficulty.MEDIUM} />
+              <DifficultyLabel diff={post.difficulty} />
             </span>
           </h2>
         </div>
@@ -16,7 +20,7 @@ export default function Post() {
         <div className="flex flex-col md:flex-row md:space-x-4 mb-6">
           <div className="md:flex-1 bg-gray-700 p-4 rounded-lg shadow-drop mb-4 md:mb-0">
             <img
-              src="https://source.unsplash.com/random"
+              src={post.imageUri}
               alt="placeholder"
               className="w-full h-auto rounded-lg"
             />
@@ -34,7 +38,7 @@ export default function Post() {
 
         <div className="bg-gray-800 p-4 rounded-lg shadow-drop mb-6">
           <h3 className="text-xl mb-2">Description</h3>
-          <p>lorem ipsum dolor sit amet</p>
+          <p>{post.description}</p>
         </div>
 
         <div className="space-y-4">

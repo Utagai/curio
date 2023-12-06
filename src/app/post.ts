@@ -1,9 +1,10 @@
 import { Difficulty } from "./difficulty";
 
-export default type Post = {
+export type Post = {
   id: string;
   title: string;
   author: string;
+  description: string;
   difficulty: Difficulty;
   imageUri: string;
 };
