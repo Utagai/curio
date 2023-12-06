@@ -1,4 +1,4 @@
-export default function Listing() {
+export default function Posts() {
   return (
     <main className="container mx-auto p-4">
       <h2 className="text-3xl font-bold text-center mb-8">Posts</h2>
