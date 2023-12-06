@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import DifficultyLabel, { Difficulty } from "../../difficulty";
-import { getPostById } from "../../memorydb";
+import { getPostById, getSubmissionsForPost } from "../../memorydb";
+import Submission from "./Submission";
 
 export default function Post({ params }: { params: { id: string } }) {
   const post = getPostById(params.id)!;
@@ -42,22 +43,9 @@ export default function Post({ params }: { params: { id: string } }) {
         </div>
 
         <div className="space-y-4">
-          <div className="bg-gray-800 p-4 rounded-lg shadow-drop flex items-center">
-            <div className="w-24 h-24 bg-gray-700 mr-4"></div>
-            <div>
-              <h4 className="text-lg mb-1">found by Kim</h4>
-              <p className="text-gray-400 mb-1">Lorem ipsum dolor sit amet.</p>
-              <p className="text-gray-500 text-sm">December 2, 2023</p>
-            </div>
-          </div>
-          <div className="bg-gray-800 p-4 rounded-lg shadow-drop flex items-center">
-            <div className="w-24 h-24 bg-gray-700 mr-4"></div>
-            <div>
-              <h4 className="text-lg mb-1">found by Alice</h4>
-              <p className="text-gray-400 mb-1">Lorem ipsum dolor sit amet.</p>
-              <p className="text-gray-500 text-sm">December 1, 2023</p>
-            </div>
-          </div>
+          {getSubmissionsForPost(post.id).map((submission) => (
+            <Submission key={submission.id} {...submission} />
+          ))}
         </div>
       </main>
     </>
