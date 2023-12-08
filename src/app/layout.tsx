@@ -11,7 +11,7 @@ const pacificoFont = Pacifico({
 });
 
 export const metadata: Metadata = {
-  title: "Wond",
+  title: "Curio",
   description: "Share IRL easter eggs",
 };
 
