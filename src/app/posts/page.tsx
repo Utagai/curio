@@ -1,12 +1,14 @@
-import { allPosts } from "../db/memory";
+import MemoryDB from "../db/memory";
 import PostCard from "./PostCard";
 
-export default function Posts() {
+export default async function Posts() {
+  const db = new MemoryDB();
+  const posts = await db.allPosts();
   return (
     <main className="container mx-auto p-4">
       <h2 className="text-3xl font-bold text-center mb-8">Posts</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {allPosts().map((post) => (
+        {posts.map((post) => (
           <PostCard
             key={post.id}
             id={post.id}

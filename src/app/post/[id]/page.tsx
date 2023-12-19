@@ -1,10 +1,12 @@
 import { useRouter } from "next/navigation";
 import DifficultyLabel from "../../Difficulty";
-import { getPostById, getSubmissionsForPost } from "../../db/memory";
+import MemoryDB from "../../db/memory";
 import Submission from "./Submission";
 
-export default function Post({ params }: { params: { id: string } }) {
-  const post = getPostById(params.id)!;
+export default async function Post({ params }: { params: { id: string } }) {
+  const db = new MemoryDB();
+  const post = await db.postById(params.id)!;
+  const submissions = await db.submissionsById(params.id);
   return (
     <>
       <main className="py-8 px-32 m-8">
@@ -43,7 +45,7 @@ export default function Post({ params }: { params: { id: string } }) {
         </div>
 
         <div className="space-y-4">
-          {getSubmissionsForPost(post.id).map((submission) => (
+          {submissions.map((submission) => (
             <Submission key={submission.id} {...submission} />
           ))}
         </div>
