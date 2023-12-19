@@ -38,11 +38,10 @@ export default function NewPost() {
         <div className="bg-gray-800 p-4 rounded-lg shadow-drop mb-6">
           <h3 className="text-xl mb-2">Description</h3>
 
-          {/* TODO: this placeholder text needs some work */}
           <textarea
             className="editable bg-gray-700 w-full p-4 rounded-lg"
             rows={4}
-            placeholder="This is a description"
+            placeholder="Your description"
           ></textarea>
         </div>
 
