@@ -3,6 +3,9 @@
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 
+// Do not confuse this with MapContainer from react-leaflet. This is a container
+// for the Map component in this project.
+// As you might guess, I'm happy to take suggestions for a better name.
 export default function MapContainer() {
   const Map = dynamic(() => import("./Map"), {
     loading: () => (
