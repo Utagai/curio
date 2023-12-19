@@ -1,5 +1,6 @@
 import EditableHeader from "./EditableHeader";
 import SubmitButton from "./SubmitButton";
+import UploadImageButton from "./UploadImageButton";
 
 export default function NewPost() {
   return (
@@ -18,12 +19,7 @@ export default function NewPost() {
 
         <div className="flex flex-col md:flex-row md:space-x-4 mb-6">
           <div className="md:flex-1 bg-gray-700 p-4 rounded-lg shadow-drop mb-4 md:mb-0">
-            {/* The image here should be a preview of the image that will be uploaded and the placeholder should be changed. */}
-            <img
-              src={"https://placehold.co/600x300"}
-              alt="placeholder"
-              className="w-full h-auto rounded-lg"
-            />
+            <UploadImageButton />
           </div>
           <div className="md:flex-1 bg-gray-700 p-4 rounded-lg shadow-drop">
             <div className="h-full w-full" id="map">
