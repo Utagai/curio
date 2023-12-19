@@ -1,4 +1,5 @@
 import EditableHeader from "./EditableHeader";
+import SubmitButton from "./SubmitButton";
 
 export default function NewPost() {
   return (
@@ -45,10 +46,8 @@ export default function NewPost() {
           ></textarea>
         </div>
 
-        {/* TODO: This button currently looks kinda bad and also doesn't do anything */}
-        <button className="bg-gray-800 p-2 rounded-lg shadow-drop mb-6">
-          Submit
-        </button>
+        {/* TODO: This button currently doesn't do anything */}
+        <SubmitButton />
       </main>
     </>
   );

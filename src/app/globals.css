@@ -27,6 +27,20 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
+
+.btn-submit {
+  background-color: rgb(17, 39, 21);
+  border: 3px solid rgb(47, 66, 50);
+  transition: background-color 0.3s, border-color 0.3s;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: rgb(77, 93, 80);
+  border: 3px solid rgb(47, 66, 50);
+  color: white;
+}
+
 @media (max-width: 640px) {
   .card-shadow {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
