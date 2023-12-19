@@ -1,18 +1,13 @@
+import EditableHeader from "./EditableHeader";
+
 export default function NewPost() {
   return (
     <>
       <main className="py-8 px-32 m-8">
         <div className="mb-6">
           <h2 className="text-3xl mb-2">
-            <span className="italic">
-              {/* TODO: Need to dynamically set the width of this textarea as input is put into it */}
-              <textarea
-                className="editable text-4xl font-bold bg-gray-700 p-2 mx-2 rounded-lg"
-                rows={1}
-                cols={8}
-                placeholder="This is a title"
-                style={{ resize: "none", height: "1.5em", lineHeight: "1em" }}
-              ></textarea>
+            <span>
+              <EditableHeader placeholder="Your Title" />
             </span>
             <span className="text-sm text-gray-400">
               by {"you" /* TODO: Need to dynamically get this value */}
