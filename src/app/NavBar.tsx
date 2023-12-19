@@ -11,6 +11,12 @@ export default function NavBar() {
         >
           Posts
         </Link>
+        <Link
+          href="/posts/new"
+          className="text-white px-4 py-2 hover:text-gray-300"
+        >
+          New
+        </Link>
         <a href="#" className="text-white px-4 py-2 hover:text-gray-300">
           About
         </a>

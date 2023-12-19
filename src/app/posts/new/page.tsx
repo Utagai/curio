@@ -1,0 +1,61 @@
+export default function NewPost() {
+  return (
+    <>
+      <main className="py-8 px-32 m-8">
+        <div className="mb-6">
+          <h2 className="text-3xl mb-2">
+            <span className="italic">
+              {/* TODO: Need to dynamically set the width of this textarea as input is put into it */}
+              <textarea
+                className="editable text-4xl font-bold bg-gray-700 p-2 mx-2 rounded-lg"
+                rows={1}
+                cols={8}
+                placeholder="This is a title"
+                style={{ resize: "none", height: "1.5em", lineHeight: "1em" }}
+              ></textarea>
+            </span>
+            <span className="text-sm text-gray-400">
+              by {"you" /* TODO: Need to dynamically get this value */}
+            </span>
+          </h2>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:space-x-4 mb-6">
+          <div className="md:flex-1 bg-gray-700 p-4 rounded-lg shadow-drop mb-4 md:mb-0">
+            {/* The image here should be a preview of the image that will be uploaded and the placeholder should be changed. */}
+            <img
+              src={"https://placehold.co/600x300"}
+              alt="placeholder"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
+          <div className="md:flex-1 bg-gray-700 p-4 rounded-lg shadow-drop">
+            <div className="h-full w-full" id="map">
+              <iframe
+                className="h-full w-full"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24201.453993981195!2d-73.87777722063598!3d40.691994681261235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25d0d3ab223cd%3A0x16b11fd586b90f7d!2sRoberta&#39;s!5e0!3m2!1sen!2sus!4v1701649584713!5m2!1sen!2sus"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 p-4 rounded-lg shadow-drop mb-6">
+          <h3 className="text-xl mb-2">Description</h3>
+
+          {/* TODO: this placeholder text needs some work */}
+          <textarea
+            className="editable bg-gray-700 w-full p-4 rounded-lg"
+            rows={4}
+            placeholder="This is a description"
+          ></textarea>
+        </div>
+
+        {/* TODO: This button currently looks kinda bad and also doesn't do anything */}
+        <button className="bg-gray-800 p-2 rounded-lg shadow-drop mb-6">
+          Submit
+        </button>
+      </main>
+    </>
+  );
+}
