@@ -16,8 +16,8 @@ export default function MapContainer() {
     ssr: false,
   });
   return (
-    <div className="md:flex-1 bg-gray-700 p-4 rounded-lg shadow-drop">
-      <div className="h-full w-full">
+    <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop">
+      <div className="w-full md:h-full aspect-square md:aspect-auto">
         <Map />
       </div>
     </div>
