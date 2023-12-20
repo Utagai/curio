@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Pacifico } from "next/font/google";
+import { Pacifico, Libre_Caslon_Text } from "next/font/google";
 import NavBar from "./NavBar";
 
 const pacificoFont = Pacifico({
@@ -9,6 +9,13 @@ const pacificoFont = Pacifico({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-pacifico",
+});
+
+const libreCaslonTextFont = Libre_Caslon_Text({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-librecaslon",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider>
-        <body className={`${pacificoFont.variable} bg-gray-900 text-white`}>
+        <body
+          className={`${pacificoFont.variable} ${libreCaslonTextFont.variable} bg-gray-900 text-white`}
+        >
           <NavBar />
           {children}
         </body>

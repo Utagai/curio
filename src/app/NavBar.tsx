@@ -18,9 +18,12 @@ export default function NavBar() {
         >
           New
         </Link>
-        <a href="#" className="text-white px-4 py-2 hover:text-gray-300">
+        <Link
+          href="/about"
+          className="text-white px-4 py-2 hover:text-gray-300"
+        >
           About
-        </a>
+        </Link>
         <span className="inline-block">
           <UserButton afterSignOutUrl="/" />
         </span>

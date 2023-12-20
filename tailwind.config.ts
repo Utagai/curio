@@ -15,6 +15,7 @@ const config: Config = {
       },
       fontFamily: {
         pacifico: ["var(--font-pacifico)"],
+        librecaslon: ["var(--font-librecaslon)"],
       },
     },
   },
