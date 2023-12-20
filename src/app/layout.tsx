@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Pacifico } from "next/font/google";
 import NavBar from "./NavBar";
 
@@ -22,10 +23,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${pacificoFont.variable} bg-gray-900 text-white`}>
-        <NavBar />
-        {children}
-      </body>
+      <ClerkProvider>
+        <body className={`${pacificoFont.variable} bg-gray-900 text-white`}>
+          <NavBar />
+          {children}
+        </body>
+      </ClerkProvider>
     </html>
   );
 }

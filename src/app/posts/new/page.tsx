@@ -2,8 +2,10 @@ import EditableHeader from "./EditableHeader";
 import SubmitButton from "./SubmitButton";
 import UploadImageButton from "./UploadImageButton";
 import MapContainer from "./MapContainer";
+import { currentUser } from "@clerk/nextjs";
 
-export default function NewPost() {
+export default async function NewPost() {
+  const user = await currentUser();
   return (
     <>
       <main className="py-8 px-32 m-8">
@@ -12,9 +14,7 @@ export default function NewPost() {
             <span>
               <EditableHeader placeholder="Your Title" />
             </span>
-            <span className="text-sm text-gray-400">
-              by {"you" /* TODO: Need to dynamically get this value */}
-            </span>
+            <span className="text-sm text-gray-400">by {user?.username}</span>
           </h2>
         </div>
 
