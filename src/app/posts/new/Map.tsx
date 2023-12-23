@@ -3,13 +3,11 @@ import { MapContainer, Marker, TileLayer, Circle } from "react-leaflet";
 import { useMapEvent } from "react-leaflet/hooks";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
+import { Latlng as LatLng } from "@/app/model/latlng";
 
-type LatLng = {
-  lat: number;
-  lng: number;
-};
-
-export default function MyMap() {
+export default function MyMap(props: {
+  onMarkerChange: ((loc: LatLng) => void) | undefined;
+}) {
   // This overrides leaflet's default marker icons with our own.
   // See next.config.js for how these files come to be.
   // Stolen shamelessly from the following project without fully undersetanding it:
@@ -45,14 +43,19 @@ export default function MyMap() {
         pathOptions={{ color: "pink" }}
         radius={800} // Is about 1/2 mile radius (the API's unit is meters). This means it should draw about a 1 mile diameter circle.
       ></Circle>
-      <ListenerComponent setClickedLatLng={setClickedLatLng} />
+      <ListenerComponent
+        setClickedLatLng={(latlng: LatLng) => {
+          setClickedLatLng(latlng); // Update the displayed map marker state.
+          if (props.onMarkerChange !== undefined) {
+            props.onMarkerChange(latlng); // Update the parent component's state.
+          }
+        }}
+      />
     </MapContainer>
   );
 }
 
-function ListenerComponent(props: {
-  setClickedLatLng: (latlng: LatLng) => void;
-}) {
+function ListenerComponent(props: { setClickedLatLng: (loc: LatLng) => void }) {
   useMapEvent("click", (e) => {
     console.log(e.latlng);
     props.setClickedLatLng(e.latlng);

@@ -31,7 +31,7 @@ export default async function Post({ params }: { params: { id: string } }) {
               className="w-full h-auto rounded-lg"
             />
           </div>
-          <MapContainer />
+          <MapContainer onMarkerChange={undefined} />
         </div>
 
         <div className="bg-gray-800 p-2 rounded-lg shadow-drop mb-4">

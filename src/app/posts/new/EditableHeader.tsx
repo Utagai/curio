@@ -1,4 +1,7 @@
-export default function EditableHeader(props: { placeholder: string }) {
+export default function EditableHeader(props: {
+  placeholder: string;
+  onChange: (value: string) => void;
+}) {
   // NOTE: For some reason, white-space-nowrap doesn't work here.
   return (
     <textarea
@@ -8,6 +11,7 @@ export default function EditableHeader(props: { placeholder: string }) {
       style={{
         whiteSpace: "nowrap",
       }}
+      onChange={(e) => props.onChange(e.target.value)}
     ></textarea>
   );
 }
