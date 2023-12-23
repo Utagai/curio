@@ -59,6 +59,7 @@ export default function ClientPage({
             onMarkerChange={(loc) => {
               setState({ ...state, loc });
             }}
+            clickable={true}
           />
         </div>
 

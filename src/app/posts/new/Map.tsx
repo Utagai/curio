@@ -7,6 +7,7 @@ import { Latlng as LatLng } from "@/app/model/latlng";
 
 export default function MyMap(props: {
   onMarkerChange: ((loc: LatLng) => void) | undefined;
+  clickable: boolean;
 }) {
   // This overrides leaflet's default marker icons with our own.
   // See next.config.js for how these files come to be.
@@ -50,13 +51,18 @@ export default function MyMap(props: {
             props.onMarkerChange(latlng); // Update the parent component's state.
           }
         }}
+        clickable={props.clickable}
       />
     </MapContainer>
   );
 }
 
-function ListenerComponent(props: { setClickedLatLng: (loc: LatLng) => void }) {
+function ListenerComponent(props: {
+  setClickedLatLng: (loc: LatLng) => void;
+  clickable: boolean;
+}) {
   useMapEvent("click", (e) => {
+    if (!props.clickable) return;
     console.log(e.latlng);
     props.setClickedLatLng(e.latlng);
   });
