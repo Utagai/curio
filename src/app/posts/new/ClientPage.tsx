@@ -12,7 +12,7 @@ type newPostState = {
   username: string | null | undefined;
   token: string | null;
   title: string;
-  imageFile: string;
+  imageFile: File;
   loc: {
     lat: number;
     lng: number;
@@ -53,7 +53,9 @@ export default function ClientPage({
 
         <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
           <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop mb-4 md:mb-0">
-            <UploadImageButton />
+            <UploadImageButton
+              onUpload={(file) => setState({ ...state, imageFile: file })}
+            />
           </div>
           <MapContainer
             onMarkerChange={(loc) => {

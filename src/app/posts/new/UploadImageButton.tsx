@@ -2,7 +2,9 @@
 
 import { ChangeEvent, useRef, useState } from "react";
 
-export default function UploadImageButton() {
+export default function UploadImageButton(props: {
+  onUpload: (file: File) => void;
+}) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(
     "https://placehold.co/600x300"
   );
@@ -11,6 +13,8 @@ export default function UploadImageButton() {
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    props.onUpload(file);
 
     const reader = new FileReader();
     reader.onloadend = () => {
