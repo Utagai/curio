@@ -1,4 +1,5 @@
 import { Difficulty } from "./difficulty";
+import { Latlng } from "./latlng";
 
 export type Post = {
   id: string;
@@ -7,4 +8,6 @@ export type Post = {
   description: string;
   difficulty: Difficulty;
   imageUri: string;
+  submittedAt: Date;
+  location: Latlng;
 };
