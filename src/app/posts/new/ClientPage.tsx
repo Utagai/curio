@@ -35,6 +35,10 @@ export default function ClientPage({
   const [state, setState] = useState<newPostState>({
     username,
     token,
+    loc: {
+      lat: 40.7767,
+      lng: -73.9727,
+    },
   } as newPostState);
 
   return (
