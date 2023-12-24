@@ -7,6 +7,7 @@ import UploadImageButton from "./UploadImageButton";
 import MapContainer from "./MapContainer";
 import SubmitButton from "./SubmitButton";
 import { Difficulty } from "@/app/model/difficulty";
+import { inspect } from "util";
 
 type newPostState = {
   username: string | null | undefined;
@@ -81,7 +82,32 @@ export default function ClientPage({
         {/* TODO: This button currently doesn't do anything */}
         <SubmitButton
           onClick={() => {
-            console.dir(state, { depth: null, colors: true });
+            console.log(
+              `PUT /api/posts. token: ${state.token}, title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`
+            );
+            const formData = new FormData();
+            formData.append("title", state.title);
+            formData.append("description", state.description);
+            formData.append("difficulty", Difficulty.MEDIUM.toString());
+            formData.append("image", state.imageFile);
+            formData.append("lat", state.loc.lat.toString());
+            formData.append("lng", state.loc.lng.toString());
+            formData.append("author", state.username!);
+            formData.append("time", new Date().toISOString());
+
+            fetch("/api/post", {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${state.token}`,
+              },
+              body: formData,
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((json) => {
+                console.log(json);
+              });
           }}
         />
       </main>
