@@ -13,19 +13,20 @@ export default class MongoDB implements Database {
   }
 
   async allPosts(): Promise<Post[]> {
-    return postsFromPipeline(this.coll, []);
+    const cur = this.coll.aggregate([]);
+    const docs = await cur.toArray();
+    return docs.map((doc) => {
+      return postFromDoc(doc);
+    });
   }
 
   async postById(id: string): Promise<Post> {
-    // TODO: Should this helper be replaced with findOne()?
-    const posts = await postsFromPipeline(this.coll, [
-      { $match: { _id: new ObjectId(id) } },
-    ]);
-    if (posts.length === 0) {
+    const post = await this.coll.findOne({ _id: new ObjectId(id) });
+    if (!post) {
       return Promise.reject(`post not found: '${id}'`);
     }
 
-    return posts[0];
+    return postFromDoc(post);
   }
 
   submissionsById(id: string): Promise<Submission[]> {
@@ -42,17 +43,6 @@ export default class MongoDB implements Database {
       console.log(`inserted post: ${result.insertedId}`);
     });
   }
-}
-
-async function postsFromPipeline(
-  coll: Collection,
-  pipeline: Document[]
-): Promise<Post[]> {
-  const cur = coll.aggregate(pipeline);
-  const docs = await cur.toArray();
-  return docs.map((doc) => {
-    return postFromDoc(doc);
-  });
 }
 
 function postFromDoc(doc: Document): Post {

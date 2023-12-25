@@ -83,7 +83,6 @@ export default function ClientPage({
           ></textarea>
         </div>
 
-        {/* TODO: This button currently doesn't do anything */}
         <SubmitButton
           onClick={() => {
             console.log(

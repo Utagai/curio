@@ -5,7 +5,6 @@ import { readFileSync } from "fs";
 import { ObjectId } from "mongodb";
 import { readFile } from "fs/promises";
 
-// TODO: This ends up being explored during npm run build... how do we stop that?
 const initialBlobStoragePaths: { [key: string]: string } = {
   ["65891f48da75b822c4d872f8"]: "./rsrc/localpics/post-1.png",
   ["65891f94da75b822c4d872f9"]: "./rsrc/localpics/post-2.png",
@@ -49,14 +48,10 @@ export default class LocalBlobStorage implements BlobStorage {
 
   async get(key: string): Promise<Blob> {
     await this.ensureInit();
-    // TODO: Should maybe use findOne()?
-    console.log(`Looking for blob key: ${key}`);
-    const cur = this.coll.aggregate([{ $match: { key } }]);
-    const hasNext = await cur.hasNext();
-    if (!hasNext) {
+    const blobDoc = await this.coll.findOne({ key });
+    if (!blobDoc) {
       return Promise.reject(`blob not found: '${key}'`);
     }
-    const blobDoc = await cur.next();
-    return new Blob([blobDoc!.data.buffer], { type: "image/png" });
+    return new Blob([blobDoc.data.buffer], { type: "image/png" });
   }
 }

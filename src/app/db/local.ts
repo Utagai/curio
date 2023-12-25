@@ -77,7 +77,6 @@ export default class LocalDB implements Database {
     this.mongoDB = new MongoDB("mongodb://localhost:27017");
   }
 
-  // TODO: Use a decorator via @?
   async ensureInit() {
     const promises = initialPosts.map(async (post) => {
       // Insert directly via the MongoClient to avoid dupes.
