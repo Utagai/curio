@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "cleandata": "killall -q mongod || rm -rf mdb/data/db/*",
-    "mongod": "mkdir -p mdb/data/db mdb/log/ && mongod --dbpath mdb/data/db --logpath mdb/log/mongod.log --fork",
-    "dev": "npm run cleandata && npm run mongod && next dev",
+    "cleandata": "rm -rf mdb/data/db/*",
+    "mongod": "mkdir -p mdb/data/db mdb/log/ && killall -q mongod; sleep 2; mongod --dbpath mdb/data/db --logpath mdb/log/mongod.log --fork",
+    "dev": "npm run mongod && next dev",
+    "freshdev": "npm run cleandata && npm run mongod && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
