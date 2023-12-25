@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
-import { Difficulty } from "../model/difficulty";
-import { Post } from "../model/post";
+import { Difficulty } from "../../model/difficulty";
+import { Post } from "../../model/post";
 import Database from "./interface";
 import MongoDB from "./mongodb";
 import { ObjectId } from "mongodb";

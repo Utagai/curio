@@ -1,5 +1,5 @@
 import { Collection, Document, MongoClient, ObjectId } from "mongodb";
-import { Post } from "../model/post";
+import { Post } from "../../model/post";
 import Database from "./interface";
 
 const database = "curio";

@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import DifficultyLabel from "../../Difficulty";
-import LocalDB from "../../db/local";
+import LocalDB from "../../api/db/local";
 import Submission from "./Submission";
 import MapContainer from "@/app/posts/new/MapContainer";
 

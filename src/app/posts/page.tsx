@@ -1,4 +1,4 @@
-import LocalDB from "../db/local";
+import LocalDB from "../api/db/local";
 import PostCard from "./PostCard";
 
 export default async function Posts() {

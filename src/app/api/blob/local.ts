@@ -1,7 +1,5 @@
 import { Collection, MongoClient } from "mongodb";
 import BlobStorage from "./interface";
-import { v4 as uuid } from "uuid";
-import { readFileSync } from "fs";
 import { ObjectId } from "mongodb";
 import { readFile } from "fs/promises";
 

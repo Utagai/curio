@@ -1,5 +1,5 @@
-import LocalBlobStorage from "@/app/blob/local";
-import LocalDB from "@/app/db/local";
+import LocalBlobStorage from "@/app/api/blob/local";
+import LocalDB from "@/app/api/db/local";
 import { NextRequest } from "next/server";
 
 const blobStorage = (() => {
