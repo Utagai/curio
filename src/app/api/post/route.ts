@@ -1,11 +1,18 @@
-import MemoryBlobStorage from "@/app/db/blob/memory";
+import LocalBlobStorage from "@/app/blob/local";
+import LocalDB from "@/app/db/local";
 import { Difficulty } from "@/app/model/difficulty";
 import { Post } from "@/app/model/post";
 import { NextRequest, NextResponse } from "next/server";
+import { v4 as uuid } from "uuid";
 
 const blobStorage = (() => {
-  const memoryBlobStorage = new MemoryBlobStorage();
+  const memoryBlobStorage = new LocalBlobStorage();
   return memoryBlobStorage;
+})();
+
+const db = (() => {
+  const memoryDb = new LocalDB();
+  return memoryDb;
 })();
 
 export async function PUT(req: NextRequest) {
@@ -24,9 +31,11 @@ export async function PUT(req: NextRequest) {
     );
   }
 
+  const blobKey = await blobStorage.upload(file);
+
   const post: Post = {
-    id: "hehe",
-    imageUri: "hehe",
+    id: uuid(),
+    blobKey: blobKey,
     title: extractStringValue(fdata, "title"),
     author: extractStringValue(fdata, "author"),
     submittedAt: extractDateValue(fdata, "time"),
@@ -36,11 +45,14 @@ export async function PUT(req: NextRequest) {
     },
     description: extractStringValue(fdata, "description"),
     difficulty: extractDifficultyValue(fdata, "difficulty"),
+    submissions: [],
   };
 
   console.log(post);
 
-  return NextResponse.json(post, { status: 200 });
+  const postId = await db.insertPost(post);
+
+  return NextResponse.json({ post, postId }, { status: 200 });
 }
 
 function extractStringValue(formData: FormData, key: string): string {

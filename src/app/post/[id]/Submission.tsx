@@ -2,12 +2,12 @@ export default function Submission(props: {
   submittedBy: string;
   date: Date;
   message: string;
-  imageUri: string;
+  blobKey: string;
 }) {
   return (
     <div className="bg-gray-800 p-2 rounded-lg shadow-drop flex items-center">
       <img
-        src={props.imageUri}
+        src={`/api/post/image?id=${props.blobKey}`}
         alt="placeholder"
         className="w-24 h-24 bg-gray-700 mr-4"
       />

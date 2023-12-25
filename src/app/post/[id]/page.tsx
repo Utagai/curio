@@ -1,11 +1,11 @@
 import { useRouter } from "next/navigation";
 import DifficultyLabel from "../../Difficulty";
-import MemoryDB from "../../db/memory";
+import LocalDB from "../../db/local";
 import Submission from "./Submission";
 import MapContainer from "@/app/posts/new/MapContainer";
 
 export default async function Post({ params }: { params: { id: string } }) {
-  const db = new MemoryDB();
+  const db = new LocalDB();
   const post = await db.postById(params.id)!;
   const submissions = await db.submissionsById(params.id);
   return (
@@ -26,7 +26,7 @@ export default async function Post({ params }: { params: { id: string } }) {
         <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
           <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop mb-4 md:mb-0">
             <img
-              src={post.imageUri}
+              src={`/api/post/image?id=${post.id}`}
               alt="placeholder"
               className="w-full h-auto rounded-lg"
             />
@@ -40,8 +40,8 @@ export default async function Post({ params }: { params: { id: string } }) {
         </div>
 
         <div className="space-y-4">
-          {submissions.map((submission) => (
-            <Submission key={submission.id} {...submission} />
+          {submissions.map((submission, i) => (
+            <Submission key={i} {...submission} />
           ))}
         </div>
       </main>

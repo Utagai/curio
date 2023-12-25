@@ -7,7 +7,8 @@ export type Post = {
   author: string;
   description: string;
   difficulty: Difficulty;
-  imageUri: string;
+  blobKey: string;
   submittedAt: Date;
   location: Latlng;
+  submissions: Submission[];
 };

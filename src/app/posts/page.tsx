@@ -1,9 +1,10 @@
-import MemoryDB from "../db/memory";
+import LocalDB from "../db/local";
 import PostCard from "./PostCard";
 
 export default async function Posts() {
-  const db = new MemoryDB();
+  const db = new LocalDB();
   const posts = await db.allPosts();
+  console.log(`Got back ${posts.length} posts`);
   return (
     <main className="container mx-auto p-4">
       <h2 className="text-3xl font-bold text-center mb-8">Posts</h2>
@@ -14,7 +15,7 @@ export default async function Posts() {
             id={post.id}
             title={post.title}
             difficulty={post.difficulty}
-            imageUri={post.imageUri}
+            imageUri={`/api/post/image?id=${post.id}`}
             author={post.author}
           />
         ))}

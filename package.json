@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "cleandata": "killall -q mongod || rm -rf mdb/data/db/*",
+    "mongod": "mkdir -p mdb/data/db mdb/log/ && mongod --dbpath mdb/data/db --logpath mdb/log/mongod.log --fork",
+    "dev": "npm run cleandata && npm run mongod && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,16 +13,19 @@
   "dependencies": {
     "@clerk/nextjs": "^4.28.1",
     "leaflet": "^1.9.4",
+    "mongodb": "^6.3.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
-    "react-leaflet": "^4.2.1"
+    "react-leaflet": "^4.2.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.8",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.0.1",
     "copy-webpack-plugin": "^11.0.0",
     "eslint": "^8",
