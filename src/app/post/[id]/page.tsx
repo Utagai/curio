@@ -1,11 +1,12 @@
 import { useRouter } from "next/navigation";
 import DifficultyLabel from "../../Difficulty";
-import LocalDB from "../../api/db/local";
 import Submission from "./Submission";
 import MapContainer from "@/app/posts/new/MapContainer";
+import { dbFactory } from "@/app/api/factory";
+
+const db = dbFactory();
 
 export default async function Post({ params }: { params: { id: string } }) {
-  const db = new LocalDB();
   const post = await db.postById(params.id)!;
   const submissions = await db.submissionsById(params.id);
   return (

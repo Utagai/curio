@@ -1,5 +1,3 @@
-import LocalBlobStorage from "@/app/api/blob/local";
-import LocalDB from "@/app/api/db/local";
 import { NextRequest } from "next/server";
 import { blobStorageFactory, dbFactory } from "../../factory";
 

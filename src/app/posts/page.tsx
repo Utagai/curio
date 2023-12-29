@@ -1,8 +1,9 @@
-import LocalDB from "../api/db/local";
+import { dbFactory } from "../api/factory";
 import PostCard from "./PostCard";
 
+const db = dbFactory();
+
 export default async function Posts() {
-  const db = new LocalDB();
   const posts = await db.allPosts();
   console.log(`Got back ${posts.length} posts`);
   return (
