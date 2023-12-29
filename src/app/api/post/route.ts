@@ -4,16 +4,9 @@ import { Difficulty } from "@/app/model/difficulty";
 import { Post } from "@/app/model/post";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuid } from "uuid";
+import { blobStorageFactory, dbFactory } from "../factory";
 
-const blobStorage = (() => {
-  const memoryBlobStorage = new LocalBlobStorage();
-  return memoryBlobStorage;
-})();
-
-const db = (() => {
-  const memoryDb = new LocalDB();
-  return memoryDb;
-})();
+const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
 
 export async function PUT(req: NextRequest) {
   const fdata = await req.formData();
@@ -31,6 +24,10 @@ export async function PUT(req: NextRequest) {
     );
   }
 
+  // TODO: A clear problem here is that if the upload passes but the post insert fails, the blob will be orphaned.
+  // I think instead of trying to invest into complicated things like 2PC we should just accept the
+  // eventual consistency and have a cron job that cleans up orphaned blobs.
+  // I'm not going to care about this right now but file a ticket for it instead.
   const blobKey = await blobStorage.upload(file);
 
   const post: Post = {

@@ -1,16 +1,9 @@
 import LocalBlobStorage from "@/app/api/blob/local";
 import LocalDB from "@/app/api/db/local";
 import { NextRequest } from "next/server";
+import { blobStorageFactory, dbFactory } from "../../factory";
 
-const blobStorage = (() => {
-  const memoryBlobStorage = new LocalBlobStorage();
-  return memoryBlobStorage;
-})();
-
-const db = (() => {
-  const memoryDb = new LocalDB();
-  return memoryDb;
-})();
+const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
