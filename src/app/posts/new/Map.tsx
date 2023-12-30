@@ -63,7 +63,6 @@ function ListenerComponent(props: {
 }) {
   useMapEvent("click", (e) => {
     if (!props.clickable) return;
-    console.log(e.latlng);
     props.setClickedLatLng(e.latlng);
   });
   return null;

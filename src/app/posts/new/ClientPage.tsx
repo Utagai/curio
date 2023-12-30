@@ -89,7 +89,7 @@ export default function ClientPage({
         <SubmitButton
           onClick={() => {
             console.log(
-              `PUT /api/posts. token: ${state.token}, title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`
+              `PUT /api/posts. title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`
             );
             const formData = new FormData();
             formData.append("title", state.title);
@@ -112,7 +112,6 @@ export default function ClientPage({
                 return res.json();
               })
               .then((post) => {
-                console.log(JSON.stringify(post));
                 router.push(`/post/${post.id}`);
               });
           }}
