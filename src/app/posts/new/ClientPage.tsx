@@ -10,6 +10,7 @@ import { Difficulty } from "@/app/model/difficulty";
 import { inspect } from "util";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { MapResizeRequestEventName } from "./Map";
 
 type newPostState = {
   username: string | null | undefined;
@@ -62,7 +63,14 @@ export default function ClientPage({
         <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
           <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop mb-4 md:mb-0">
             <UploadImageButton
-              onUpload={(file) => setState({ ...state, imageFile: file })}
+              onUpload={(file) => {
+                setState({ ...state, imageFile: file });
+                // Leaflet is annoying because it requires us to manually call invalidateSize() on the map when the parent
+                // container's height changes... I tried a few options through CSS but couldn't get it to update without
+                // this machinery.
+                window.dispatchEvent(new Event(MapResizeRequestEventName));
+                console.log("dispatched map resize request");
+              }}
             />
           </div>
           <MapContainer

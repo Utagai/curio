@@ -1,9 +1,11 @@
 import Leaflet from "leaflet";
 import { MapContainer, Marker, TileLayer, Circle } from "react-leaflet";
-import { useMapEvent } from "react-leaflet/hooks";
+import { useMap, useMapEvent } from "react-leaflet/hooks";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { Latlng as LatLng } from "@/app/model/latlng";
+
+export const MapResizeRequestEventName = "map-resize-request";
 
 export default function MyMap(props: {
   onMarkerChange: ((loc: LatLng) => void) | undefined;
@@ -61,9 +63,25 @@ function ListenerComponent(props: {
   setClickedLatLng: (loc: LatLng) => void;
   clickable: boolean;
 }) {
+  const map = useMap();
   useMapEvent("click", (e) => {
     if (!props.clickable) return;
     props.setClickedLatLng(e.latlng);
+  });
+  window.addEventListener(MapResizeRequestEventName, () => {
+    console.log("map resize request received");
+    const resize = () => {
+      setTimeout(() => {
+        if (map.invalidateSize(true).getSize() == map.getSize()) {
+          console.log("map size has not changed");
+          resize();
+        } else {
+          console.log("map size changed");
+          return;
+        }
+      }, 100);
+    };
+    resize();
   });
   return null;
 }
