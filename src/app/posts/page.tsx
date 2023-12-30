@@ -1,6 +1,8 @@
 import { dbFactory } from "../api/factory";
 import PostCard from "./PostCard";
 
+export const dynamic = "force-dynamic";
+
 const db = dbFactory();
 
 export default async function Posts() {
