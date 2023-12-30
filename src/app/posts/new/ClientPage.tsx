@@ -11,6 +11,8 @@ import { inspect } from "util";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { MapResizeRequestEventName } from "./Map";
+import DifficultyLabel from "@/app/Difficulty";
+import DifficultySelector from "./DifficultySelector";
 
 type newPostState = {
   username: string | null | undefined;
@@ -42,6 +44,7 @@ export default function ClientPage({
       lat: 40.7767,
       lng: -73.9727,
     },
+    difficulty: Difficulty.MEDIUM,
   } as newPostState);
   const router = useRouter();
 
@@ -57,6 +60,11 @@ export default function ClientPage({
               />
             </span>
             <span className="text-sm text-gray-400">by {state.username}</span>
+            <span className="p-2">
+              <DifficultySelector
+                onSelect={(difficulty) => setState({ ...state, difficulty })}
+              />
+            </span>
           </h2>
         </div>
 
@@ -102,7 +110,7 @@ export default function ClientPage({
             const formData = new FormData();
             formData.append("title", state.title);
             formData.append("description", state.description);
-            formData.append("difficulty", Difficulty.MEDIUM.toString());
+            formData.append("difficulty", state.difficulty);
             formData.append("image", state.imageFile);
             formData.append("lat", state.loc.lat.toString());
             formData.append("lng", state.loc.lng.toString());
