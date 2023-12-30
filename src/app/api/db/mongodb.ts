@@ -1,6 +1,6 @@
 import { Collection, Document, MongoClient, ObjectId } from "mongodb";
 import { Post } from "../../model/post";
-import Database from "./interface";
+import Database, { InsertPost } from "./interface";
 
 const database = "curio";
 const collection = "posts";
@@ -38,9 +38,10 @@ export default class MongoDB implements Database {
       .toArray();
   }
 
-  async insertPost(post: Post): Promise<void> {
+  async insertPost(post: InsertPost): Promise<string> {
     return this.coll.insertOne(post).then((result) => {
       console.log(`inserted post: ${result.insertedId}`);
+      return result.insertedId.toHexString();
     });
   }
 }

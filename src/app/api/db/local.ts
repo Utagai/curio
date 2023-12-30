@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import { Difficulty } from "../../model/difficulty";
 import { Post } from "../../model/post";
-import Database from "./interface";
+import Database, { InsertPost } from "./interface";
 import MongoDB from "./mongodb";
 import { ObjectId } from "mongodb";
 
@@ -108,7 +108,7 @@ export default class LocalDB implements Database {
     return this.mongoDB.submissionsById(id);
   }
 
-  async insertPost(post: Post): Promise<void> {
+  async insertPost(post: InsertPost): Promise<string> {
     await this.ensureInit();
     return this.mongoDB.insertPost(post);
   }

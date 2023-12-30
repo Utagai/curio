@@ -5,6 +5,7 @@ import { Post } from "@/app/model/post";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuid } from "uuid";
 import { blobStorageFactory, dbFactory } from "../factory";
+import { InsertPost } from "../db/interface";
 
 const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
 
@@ -30,8 +31,7 @@ export async function PUT(req: NextRequest) {
   // I'm not going to care about this right now but file a ticket for it instead.
   const blobKey = await blobStorage.upload(file);
 
-  const post: Post = {
-    id: uuid(),
+  const insert: InsertPost = {
     blobKey: blobKey,
     title: extractStringValue(fdata, "title"),
     author: extractStringValue(fdata, "author"),
@@ -45,11 +45,11 @@ export async function PUT(req: NextRequest) {
     submissions: [],
   };
 
-  console.log(post);
+  console.log(insert);
 
-  const postId = await db.insertPost(post);
+  const id = await db.insertPost(insert);
 
-  return NextResponse.json({ post, postId }, { status: 200 });
+  return NextResponse.json({ ...insert, id }, { status: 200 });
 }
 
 function extractStringValue(formData: FormData, key: string): string {
