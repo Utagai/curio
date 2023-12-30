@@ -15,8 +15,8 @@ const initialPosts: Post[] = [
     blobKey: "65891f48da75b822c4d872f8",
     submittedAt: new Date(),
     location: {
-      lat: 40.7731,
-      lng: -73.9701,
+      lat: 49.7731,
+      lng: -70.9701,
     },
     submissions: [
       {
@@ -42,8 +42,8 @@ const initialPosts: Post[] = [
     blobKey: "65891f94da75b822c4d872f9",
     submittedAt: new Date(),
     location: {
-      lat: 40.7799,
-      lng: -73.9702,
+      lat: 29.3799,
+      lng: -98.5702,
     },
     submissions: [
       {
@@ -64,7 +64,7 @@ const initialPosts: Post[] = [
     submittedAt: new Date(),
     location: {
       lat: 40.7702,
-      lng: -73.9703,
+      lng: -74.9703,
     },
     submissions: [],
   },

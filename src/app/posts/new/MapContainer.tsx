@@ -8,8 +8,9 @@ import { useMemo } from "react";
 // for the Map component in this project.
 // As you might guess, I'm happy to take suggestions for a better name.
 export default function MapContainer(props: {
-  onMarkerChange: ((loc: Latlng) => void) | undefined;
+  onMarkerChange?: (loc: Latlng) => void;
   clickable: boolean;
+  initialLocation?: Latlng;
 }) {
   const Map = useMemo(
     () =>
@@ -29,6 +30,7 @@ export default function MapContainer(props: {
         <Map
           onMarkerChange={props.onMarkerChange}
           clickable={props.clickable}
+          initialLocation={props.initialLocation}
         />
       </div>
     </div>

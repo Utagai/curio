@@ -10,6 +10,7 @@ export const MapResizeRequestEventName = "map-resize-request";
 export default function MyMap(props: {
   onMarkerChange: ((loc: LatLng) => void) | undefined;
   clickable: boolean;
+  initialLocation: LatLng | undefined;
 }) {
   // This overrides leaflet's default marker icons with our own.
   // See next.config.js for how these files come to be.
@@ -29,6 +30,11 @@ export default function MyMap(props: {
     lat: 40.7767,
     lng: -73.9727,
   });
+
+  if (props.initialLocation !== undefined) {
+    clickedLatLng.lat = props.initialLocation.lat;
+    clickedLatLng.lng = props.initialLocation.lng;
+  }
 
   return (
     <MapContainer

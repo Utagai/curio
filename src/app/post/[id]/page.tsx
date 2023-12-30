@@ -32,7 +32,7 @@ export default async function Post({ params }: { params: { id: string } }) {
               className="w-full h-auto rounded-lg"
             />
           </div>
-          <MapContainer onMarkerChange={undefined} clickable={false} />
+          <MapContainer clickable={false} initialLocation={post.location} />
         </div>
 
         <div className="bg-gray-800 p-2 rounded-lg shadow-drop mb-4">
