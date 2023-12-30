@@ -8,6 +8,8 @@ import MapContainer from "./MapContainer";
 import SubmitButton from "./SubmitButton";
 import { Difficulty } from "@/app/model/difficulty";
 import { inspect } from "util";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type newPostState = {
   username: string | null | undefined;
@@ -40,6 +42,7 @@ export default function ClientPage({
       lng: -73.9727,
     },
   } as newPostState);
+  const router = useRouter();
 
   return (
     <>
@@ -108,8 +111,9 @@ export default function ClientPage({
               .then((res) => {
                 return res.json();
               })
-              .then((json) => {
-                console.log(json);
+              .then((post) => {
+                console.log(JSON.stringify(post));
+                router.push(`/post/${post.id}`);
               });
           }}
         />

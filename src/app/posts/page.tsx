@@ -1,6 +1,7 @@
 import { dbFactory } from "../api/factory";
 import PostCard from "./PostCard";
 
+// This makes sure we don't show a stale listing of posts subsequent to a posting. This isn't as efficient as it could be I think.
 export const dynamic = "force-dynamic";
 
 const db = dbFactory();
