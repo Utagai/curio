@@ -3,7 +3,7 @@ import { MapContainer, Marker, TileLayer, Circle } from "react-leaflet";
 import { useMap, useMapEvent } from "react-leaflet/hooks";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import { Latlng as LatLng } from "@/app/model/latlng";
+import { DEFAULT_LOC_LATLNG, Latlng as LatLng } from "@/app/model/latlng";
 
 export const MapResizeRequestEventName = "map-resize-request";
 
@@ -13,8 +13,7 @@ type MyMapProps = {
   initialLocation: LatLng | undefined;
 };
 
-// TODO: Rename this?
-export default function MyMap({
+export default function Map({
   onMarkerChange,
   clickable,
   initialLocation,
@@ -34,7 +33,7 @@ export default function MyMap({
   }, []);
 
   if (!initialLocation) {
-    initialLocation = { lat: 40.7767, lng: -73.9727 };
+    initialLocation = DEFAULT_LOC_LATLNG;
   }
 
   const [clickedLatLng, setClickedLatLng] = useState<LatLng>(initialLocation);

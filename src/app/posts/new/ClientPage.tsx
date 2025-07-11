@@ -9,6 +9,7 @@ import { Difficulty } from "@/app/model/difficulty";
 import { useRouter } from "next/navigation";
 import { MapResizeRequestEventName } from "./Map";
 import DifficultySelector from "./DifficultySelector";
+import { DEFAULT_LOC_LATLNG } from "@/app/model/latlng";
 
 type newPostState = {
   username: string | null | undefined;
@@ -35,10 +36,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
     username,
     token,
     // TODO: This magic value + its duplicate in Map.tsx should be moved to model/latlng.
-    loc: {
-      lat: 40.7767,
-      lng: -73.9727,
-    },
+    loc: DEFAULT_LOC_LATLNG,
     difficulty: Difficulty.MEDIUM,
   } as newPostState);
   const router = useRouter();
