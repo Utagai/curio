@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Curio
+
+Curio is a web application that allows users to post pictures of interesting things they find in the real world. Other users can then try to find these "curiosities" and submit their own findings.
+
+## Tech Stack
+
+*   **Framework**: [Next.js](https://nextjs.org/) (using the App Router)
+*   **Language**: [TypeScript](https://www.typescriptlang.org/)
+*   **Database**: [MongoDB](https://www.mongodb.com/)
+*   **Authentication**: [Clerk](https://clerk.com/)
+*   **Blob Storage**: [Vercel Blob](https://vercel.com/storage/blob)
+*   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+*   **Mapping**: [Leaflet](https://leafletjs.com/)
+
+## Project Structure
+
+The project follows the standard Next.js App Router structure.
+
+```
+/
+├── public/              # Static assets
+├── rsrc/                # Local image resources for testing
+├── src/
+│   ├── app/
+│   │   ├── api/         # API routes
+│   │   │   ├── blob/    # Blob storage implementation (local and Vercel)
+│   │   │   ├── db/      # Database implementation (local and MongoDB)
+│   │   │   └── post/    # API routes for posts
+│   │   ├── model/       # Data models (TypeScript types)
+│   │   ├── post/        # Pages for individual posts
+│   │   └── posts/       # Pages for listing and creating posts
+│   └── middleware.ts    # Next.js middleware
+├── .env.local           # Local environment variables (not checked in)
+├── next.config.js       # Next.js configuration
+├── package.json         # Project dependencies and scripts
+└── tsconfig.json        # TypeScript configuration
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+*   Node.js (v18 or later)
+*   npm
+*   MongoDB
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation and Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1.  **Clone the repository:**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    ```bash
+    git clone <repository-url>
+    cd curio
+    ```
 
-## Learn More
+2.  **Install dependencies:**
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3.  **Set up environment variables:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    Create a `.env.local` file in the root of the project and add the necessary environment variables for Clerk, MongoDB, and Vercel Blob Storage.
 
-## Deploy on Vercel
+    ```
+    # Clerk
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+    CLERK_SECRET_KEY=
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    # MongoDB
+    MONGODB_URI=
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    # Vercel Blob Storage
+    BLOB_READ_WRITE_TOKEN=
+    ```
+
+4.  **Run the development server:**
+
+    The `dev` script will start a local MongoDB instance and then run the Next.js development server.
+
+    ```bash
+    npm run dev
+    ```
+
+    If you want to start with a clean database, you can use the `freshdev` script:
+
+    ```bash
+    npm run freshdev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Available Scripts
+
+*   `npm run dev`: Starts the development server with a local MongoDB instance.
+*   `npm run freshdev`: Clears the local database and then starts the development server.
+*   `npm run build`: Builds the application for production.
+*   `npm run start`: Starts a production server.
+*   `npm run lint`: Lints the codebase using ESLint.
+*   `npm run test`: Runs tests using Jest.
+*   `npm run mongod`: Starts a local MongoDB instance.
+*   `npm run cleandata`: Deletes all data from the local MongoDB instance.
