@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import DifficultyLabel from "../../Difficulty";
 import Submission from "./Submission";
 import MapContainer from "@/app/posts/new/MapContainer";
@@ -29,8 +28,8 @@ export default async function Post({ params }: { params: { id: string } }) {
         <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
           <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop mb-4 md:mb-0">
             <img
-              src={`/api/post/image?id=${post.id}`}
-              alt="placeholder"
+              src={`/api/post/image?blobKey=${post.blobKey}`}
+              alt="Not Found"
               className="w-full h-auto rounded-lg"
             />
           </div>

@@ -19,7 +19,7 @@ export default async function Posts() {
             id={post.id}
             title={post.title}
             difficulty={post.difficulty}
-            imageUri={`/api/post/image?id=${post.id}`}
+            imageUri={`/api/post/image?blobKey=${post.blobKey}`}
             author={post.author}
           />
         ))}
