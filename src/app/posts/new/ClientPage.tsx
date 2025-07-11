@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EditableHeader from "./EditableHeader";
 import UploadImageButton from "./UploadImageButton";
 import MapContainer from "./MapContainer";
@@ -34,6 +34,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
   const [state, setState] = useState<newPostState>({
     username,
     token,
+    // TODO: This magic value + its duplicate in Map.tsx should be moved to model/latlng.
     loc: {
       lat: 40.7767,
       lng: -73.9727,
@@ -41,6 +42,28 @@ export default function ClientPage({ username, token }: ClientPageProps) {
     difficulty: Difficulty.MEDIUM,
   } as newPostState);
   const router = useRouter();
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setState((prevState) => ({
+            ...prevState,
+            loc: { lat: latitude, lng: longitude },
+          }));
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 2000,
+          maximumAge: 0,
+        },
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -80,6 +103,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
               setState({ ...state, loc });
             }}
             clickable={true}
+            initialLocation={state.loc}
           />
         </div>
 

@@ -14,7 +14,11 @@ type MapContainerProps = {
   initialLocation?: Latlng;
 };
 
-export default function MapContainer({onMarkerChange, clickable, initialLocation}: MapContainerProps) {
+export default function MapContainer({
+  onMarkerChange,
+  clickable,
+  initialLocation,
+}: MapContainerProps) {
   const Map = useMemo(
     () =>
       dynamic(() => import("./Map"), {
@@ -25,7 +29,7 @@ export default function MapContainer({onMarkerChange, clickable, initialLocation
         ),
         ssr: false,
       }),
-    []
+    [],
   );
   return (
     <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop">

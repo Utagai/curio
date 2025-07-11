@@ -13,7 +13,12 @@ type MyMapProps = {
   initialLocation: LatLng | undefined;
 };
 
-export default function MyMap({onMarkerChange, clickable, initialLocation}: MyMapProps) {
+// TODO: Rename this?
+export default function MyMap({
+  onMarkerChange,
+  clickable,
+  initialLocation,
+}: MyMapProps) {
   // This overrides leaflet's default marker icons with our own.
   // See next.config.js for how these files come to be.
   // Stolen shamelessly from the following project without fully undersetanding it:
@@ -28,15 +33,17 @@ export default function MyMap({onMarkerChange, clickable, initialLocation}: MyMa
     })();
   }, []);
 
-  const [clickedLatLng, setClickedLatLng] = useState<LatLng>({
-    lat: 40.7767,
-    lng: -73.9727,
-  });
-
-  if (initialLocation !== undefined) {
-    clickedLatLng.lat = initialLocation.lat;
-    clickedLatLng.lng = initialLocation.lng;
+  if (!initialLocation) {
+    initialLocation = { lat: 40.7767, lng: -73.9727 };
   }
+
+  const [clickedLatLng, setClickedLatLng] = useState<LatLng>(initialLocation);
+
+  useEffect(() => {
+    if (initialLocation) {
+      setClickedLatLng(initialLocation);
+    }
+  }, [initialLocation]);
 
   return (
     <MapContainer
@@ -72,7 +79,10 @@ type ListenerComponentProps = {
   clickable: boolean;
 };
 
-function ListenerComponent({setClickedLatLng, clickable}: ListenerComponentProps) {
+function ListenerComponent({
+  setClickedLatLng,
+  clickable,
+}: ListenerComponentProps) {
   const map = useMap();
   useMapEvent("click", (e) => {
     if (!clickable) return;
