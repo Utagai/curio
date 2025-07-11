@@ -4,9 +4,11 @@ import { ChangeEvent, useRef, useState } from "react";
 
 type UploadImageButtonProps = { onUpload: (file: File) => void };
 
-export default function UploadImageButton({ onUpload }: UploadImageButtonProps) {
+export default function UploadImageButton({
+  onUpload,
+}: UploadImageButtonProps) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(
-    "https://placehold.co/600x300"
+    "https://placehold.co/600x300?text=Upload",
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
