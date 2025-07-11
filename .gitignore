@@ -37,3 +37,9 @@ next-env.d.ts
 
 # mdb data directory
 mdb/
+
+# local blob storage
+rsrc/localpics/
+
+# local database storage
+rsrc/localdb/

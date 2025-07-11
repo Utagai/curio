@@ -1,14 +1,14 @@
 import BlobStorage from "./blob/interface";
-import LocalBlobStorage from "./blob/local";
 import VercelBlobStorage from "./blob/vercel";
 import Database from "./db/interface";
 import FileDB from "./db/file";
 import MongoDB from "./db/mongodb";
+import FileBlobStorage from "./blob/local";
 
 export function blobStorageFactory(): BlobStorage {
   switch (process.env.NODE_ENV) {
     case "development":
-      return new LocalBlobStorage();
+      return new FileBlobStorage();
     case "production":
       return new VercelBlobStorage("prod");
     default:
