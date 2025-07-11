@@ -4,6 +4,8 @@ import Submission from "./Submission";
 import MapContainer from "@/app/posts/new/MapContainer";
 import { dbFactory } from "@/app/api/factory";
 
+export const dynamic = "force-dynamic";
+
 const db = dbFactory();
 
 export default async function Post({ params }: { params: { id: string } }) {
