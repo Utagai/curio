@@ -2,13 +2,11 @@
 
 import { Difficulty } from "@/app/model/difficulty";
 import { Post } from "@/app/model/post";
-import { v4 as uuid } from "uuid";
 import { blobStorageFactory, dbFactory } from "./api/factory";
 import { InsertPost } from "./api/db/interface";
 
-const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
-
 export async function createPost(formData: FormData) {
+  const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
   const file = formData.get("image");
 
   if (!(file instanceof File)) {
@@ -68,4 +66,19 @@ function extractNumberValue(formData: FormData, key: string): number {
 
 function extractDifficultyValue(formData: FormData, key: string): Difficulty {
   return extractStringValue(formData, key) as Difficulty;
+}
+
+export async function getAllPosts(): Promise<Post[]> {
+  const db = dbFactory();
+  return db.allPosts();
+}
+
+export async function getPostById(id: string): Promise<Post> {
+  const db = dbFactory();
+  return db.postById(id);
+}
+
+export async function getSubmissionsById(id: string): Promise<Submission[]> {
+  const db = dbFactory();
+  return db.submissionsById(id);
 }

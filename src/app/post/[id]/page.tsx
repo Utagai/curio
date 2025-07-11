@@ -1,15 +1,11 @@
 import DifficultyLabel from "../../Difficulty";
 import Submission from "./Submission";
 import MapContainer from "@/app/posts/new/MapContainer";
-import { dbFactory } from "@/app/api/factory";
-
-export const dynamic = "force-dynamic";
-
-const db = dbFactory();
+import { getPostById, getSubmissionsById } from "@/app/actions";
 
 export default async function Post({ params }: { params: { id: string } }) {
-  const post = await db.postById(params.id)!;
-  const submissions = await db.submissionsById(params.id);
+  const post = await getPostById(params.id)!;
+  const submissions = await getSubmissionsById(params.id);
   return (
     <>
       <main className="py-8 md:px-32 px-4 m-2">

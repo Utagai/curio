@@ -1,14 +1,10 @@
-import { dbFactory } from "../api/factory";
 import PostCard from "./PostCard";
+import { getAllPosts } from "@/app/actions";
 
-// This makes sure we don't show a stale listing of posts subsequent to a posting. This isn't as efficient as it could be I think.
 export const dynamic = "force-dynamic";
 
-const db = dbFactory();
-
 export default async function Posts() {
-  const posts = await db.allPosts();
-  console.log(`Got back ${posts.length} posts`);
+  const posts = await getAllPosts();
   return (
     <main className="container mx-auto p-4">
       <h2 className="text-3xl font-bold text-center mb-8">Posts</h2>
