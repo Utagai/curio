@@ -8,6 +8,7 @@ import SubmitButton from "./SubmitButton";
 import { Difficulty } from "@/app/model/difficulty";
 import { useRouter } from "next/navigation";
 import { MapResizeRequestEventName } from "./Map";
+import { createPost } from "@/app/actions";
 import DifficultySelector from "./DifficultySelector";
 import { DEFAULT_LOC_LATLNG } from "@/app/model/latlng";
 
@@ -123,6 +124,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
             console.log(
               `PUT /api/posts. title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`,
             );
+
             const formData = new FormData();
             formData.append("title", state.title);
             formData.append("description", state.description);
@@ -133,18 +135,14 @@ export default function ClientPage({ username, token }: ClientPageProps) {
             formData.append("author", state.username!);
             formData.append("time", new Date().toISOString());
 
-            fetch("/api/post", {
-              method: "PUT",
-              headers: {
-                Authorization: `Bearer ${state.token}`,
-              },
-              body: formData,
-            })
-              .then((res) => {
-                return res.json();
-              })
+            createPost(formData)
               .then((post) => {
-                router.push(`/post/${post.id}`);
+                if (post) {
+                  router.push(`/post/${post.id}`);
+                }
+              })
+              .catch((error) => {
+                console.error("Error creating post:", error);
               });
           }}
         />
