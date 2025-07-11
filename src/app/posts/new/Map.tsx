@@ -7,11 +7,13 @@ import { Latlng as LatLng } from "@/app/model/latlng";
 
 export const MapResizeRequestEventName = "map-resize-request";
 
-export default function MyMap(props: {
+type MyMapProps = {
   onMarkerChange: ((loc: LatLng) => void) | undefined;
   clickable: boolean;
   initialLocation: LatLng | undefined;
-}) {
+};
+
+export default function MyMap({onMarkerChange, clickable, initialLocation}: MyMapProps) {
   // This overrides leaflet's default marker icons with our own.
   // See next.config.js for how these files come to be.
   // Stolen shamelessly from the following project without fully undersetanding it:
@@ -31,9 +33,9 @@ export default function MyMap(props: {
     lng: -73.9727,
   });
 
-  if (props.initialLocation !== undefined) {
-    clickedLatLng.lat = props.initialLocation.lat;
-    clickedLatLng.lng = props.initialLocation.lng;
+  if (initialLocation !== undefined) {
+    clickedLatLng.lat = initialLocation.lat;
+    clickedLatLng.lng = initialLocation.lng;
   }
 
   return (
@@ -55,24 +57,26 @@ export default function MyMap(props: {
       <ListenerComponent
         setClickedLatLng={(latlng: LatLng) => {
           setClickedLatLng(latlng); // Update the displayed map marker state.
-          if (props.onMarkerChange !== undefined) {
-            props.onMarkerChange(latlng); // Update the parent component's state.
+          if (onMarkerChange !== undefined) {
+            onMarkerChange(latlng); // Update the parent component's state.
           }
         }}
-        clickable={props.clickable}
+        clickable={clickable}
       />
     </MapContainer>
   );
 }
 
-function ListenerComponent(props: {
+type ListenerComponentProps = {
   setClickedLatLng: (loc: LatLng) => void;
   clickable: boolean;
-}) {
+};
+
+function ListenerComponent({setClickedLatLng, clickable}: ListenerComponentProps) {
   const map = useMap();
   useMapEvent("click", (e) => {
-    if (!props.clickable) return;
-    props.setClickedLatLng(e.latlng);
+    if (!clickable) return;
+    setClickedLatLng(e.latlng);
   });
   window.addEventListener(MapResizeRequestEventName, () => {
     console.log("map resize request received");

@@ -4,15 +4,15 @@ import DifficultyLabel, {
 } from "@/app/Difficulty";
 import { Difficulty } from "@/app/model/difficulty";
 
-export default function DifficultySelector(props: {
-  onSelect: (diff: Difficulty) => void;
-}) {
+type DifficultySelectorProps = { onSelect: (diff: Difficulty) => void };
+
+export default function DifficultySelector({ onSelect }: DifficultySelectorProps) {
   const marginUtilityClass = "m-1";
   const [activeButton, setActiveButton] = useState("");
 
   const handleButtonClick = (difficulty: Difficulty) => {
     setActiveButton(difficulty);
-    props.onSelect(difficulty);
+    onSelect(difficulty);
   };
 
   return (

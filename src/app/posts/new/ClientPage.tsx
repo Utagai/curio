@@ -1,17 +1,13 @@
 "use client";
 
-import { auth, currentUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EditableHeader from "./EditableHeader";
 import UploadImageButton from "./UploadImageButton";
 import MapContainer from "./MapContainer";
 import SubmitButton from "./SubmitButton";
 import { Difficulty } from "@/app/model/difficulty";
-import { inspect } from "util";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { MapResizeRequestEventName } from "./Map";
-import DifficultyLabel from "@/app/Difficulty";
 import DifficultySelector from "./DifficultySelector";
 
 type newPostState = {
@@ -30,13 +26,11 @@ type newPostState = {
 // isolate our scopes. This is because we need client-side react code via e.g.
 // useState, useEffect, and simulataneouly, we need server-side code such as
 // currentUser().
-export default function ClientPage({
-  username,
-  token,
-}: {
+type ClientPageProps = {
   username: string | null | undefined;
   token: string | null;
-}) {
+};
+export default function ClientPage({ username, token }: ClientPageProps) {
   const [state, setState] = useState<newPostState>({
     username,
     token,
@@ -105,7 +99,7 @@ export default function ClientPage({
         <SubmitButton
           onClick={() => {
             console.log(
-              `PUT /api/posts. title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`
+              `PUT /api/posts. title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`,
             );
             const formData = new FormData();
             formData.append("title", state.title);

@@ -7,11 +7,14 @@ import { useMemo } from "react";
 // Do not confuse this with MapContainer from react-leaflet. This is a container
 // for the Map component in this project.
 // As you might guess, I'm happy to take suggestions for a better name.
-export default function MapContainer(props: {
+
+type MapContainerProps = {
   onMarkerChange?: (loc: Latlng) => void;
   clickable: boolean;
   initialLocation?: Latlng;
-}) {
+};
+
+export default function MapContainer({onMarkerChange, clickable, initialLocation}: MapContainerProps) {
   const Map = useMemo(
     () =>
       dynamic(() => import("./Map"), {
@@ -28,9 +31,9 @@ export default function MapContainer(props: {
     <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop">
       <div className="w-full md:h-full aspect-square md:aspect-auto">
         <Map
-          onMarkerChange={props.onMarkerChange}
-          clickable={props.clickable}
-          initialLocation={props.initialLocation}
+          onMarkerChange={onMarkerChange}
+          clickable={clickable}
+          initialLocation={initialLocation}
         />
       </div>
     </div>

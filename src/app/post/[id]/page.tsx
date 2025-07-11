@@ -36,8 +36,8 @@ export default async function Post({ params }: { params: { id: string } }) {
         </div>
 
         <div className="bg-gray-800 p-2 rounded-lg shadow-drop mb-4">
-          <h3 className="font-semibold text-lg md:text-xl mb-2">Description</h3>
-          <p className="text-sm md:text-base">{post.description}</p>
+          <h3 className="font-semibold text-lg md:text-xl m-4">Description</h3>
+          <p className="text-sm md:text-base m-4">{post.description}</p>
         </div>
 
         <div className="space-y-4">
