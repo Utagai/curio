@@ -2,7 +2,7 @@ import BlobStorage from "./blob/interface";
 import LocalBlobStorage from "./blob/local";
 import VercelBlobStorage from "./blob/vercel";
 import Database from "./db/interface";
-import LocalDB from "./db/local";
+import FileDB from "./db/file";
 import MongoDB from "./db/mongodb";
 
 export function blobStorageFactory(): BlobStorage {
@@ -19,9 +19,9 @@ export function blobStorageFactory(): BlobStorage {
 export function dbFactory(): Database {
   switch (process.env.NODE_ENV) {
     case "development":
-      return new LocalDB();
+      return new FileDB();
     case "production":
-      return new MongoDB(process.env.MONGODB_URI!);
+      return new MongoDB();
     default:
       throw new Error("unknown environment");
   }

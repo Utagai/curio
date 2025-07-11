@@ -6,7 +6,7 @@ Curio is a web application that allows users to post pictures of interesting thi
 
 *   **Framework**: [Next.js](https://nextjs.org/) (using the App Router)
 *   **Language**: [TypeScript](https://www.typescriptlang.org/)
-*   **Database**: [MongoDB](https://www.mongodb.com/)
+*   **Database**: [MongoDB](https://www.mongodb.com/) (production), File-based (development)
 *   **Authentication**: [Clerk](https://clerk.com/)
 *   **Blob Storage**: [Vercel Blob](https://vercel.com/storage/blob)
 *   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
@@ -20,11 +20,12 @@ The project follows the standard Next.js App Router structure.
 /
 ├── public/              # Static assets
 ├── rsrc/                # Local image resources for testing
+│   └── localdb/ # Default directory for file-based database
 ├── src/
 │   ├── app/
 │   │   ├── api/         # API routes
 │   │   │   ├── blob/    # Blob storage implementation (local and Vercel)
-│   │   │   ├── db/      # Database implementation (local and MongoDB)
+│   │   │   ├── db/      # Database implementation (file-based for development, MongoDB for production)
 │   │   │   └── post/    # API routes for posts
 │   │   ├── model/       # Data models (TypeScript types)
 │   │   ├── post/        # Pages for individual posts
@@ -77,17 +78,21 @@ The project follows the standard Next.js App Router structure.
 
 4.  **Run the development server:**
 
-    The `dev` script will start a local MongoDB instance and then run the Next.js development server.
+    The `dev` script will run the Next.js development server, using the file-based database by default.
 
     ```bash
     npm run dev
     ```
 
-    If you want to start with a clean database, you can use the `freshdev` script:
+    The file-based database stores its data in `rsrc/localdb/default.json` by default. You can change this path by setting the `CURIO_FILE_DB_PATH` environment variable.
+
+    For example, to use a different database file:
 
     ```bash
-    npm run freshdev
+    CURIO_FILE_DB_PATH=rsrc/localdb/test.json npm run dev
     ```
+
+    To start with a clean database, simply delete the `rsrc/localdb/default.json` file (or your custom file).
 
     Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -100,4 +105,4 @@ The project follows the standard Next.js App Router structure.
 *   `npm run lint`: Lints the codebase using ESLint.
 *   `npm run test`: Runs tests using Jest.
 *   `npm run mongod`: Starts a local MongoDB instance.
-*   `npm run cleandata`: Deletes all data from the local MongoDB instance.
+*   `npm run cleandata`: Deletes all data from the local MongoDB instance and the file-based database.

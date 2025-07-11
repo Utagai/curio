@@ -18,8 +18,9 @@ This project is a Next.js web application called Curio. It allows users to post 
     *   `src/app/api/factory.ts`: This file contains factory functions (`dbFactory`, `blobStorageFactory`) that return the appropriate database and blob storage implementations based on the environment.
     *   `src/app/api/db/`: Database-related files.
         *   `interface.ts`: Defines the interface for database operations.
-        *   `local.ts`: Local database implementation (for development).
+        *   `file.ts`: File-based database implementation (for development).
         *   `mongodb.ts`: MongoDB implementation (for production).
+    *   `rsrc/localdb/default.json`: The default file used by `FileDB` to store data. Can be overridden by `CURIO_FILE_DB_PATH` environment variable.
     *   `src/app/api/blob/`: Blob storage-related files.
         *   `interface.ts`: Defines the interface for blob storage operations.
         *   `local.ts`: Local blob storage implementation (for development).

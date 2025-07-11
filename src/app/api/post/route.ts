@@ -1,5 +1,3 @@
-import LocalBlobStorage from "@/app/api/blob/local";
-import LocalDB from "@/app/api/db/local";
 import { Difficulty } from "@/app/model/difficulty";
 import { Post } from "@/app/model/post";
 import { NextRequest, NextResponse } from "next/server";

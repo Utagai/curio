@@ -1,9 +1,13 @@
-import { MongoClient } from "mongodb";
+import { ObjectId } from "mongodb";
 import { Difficulty } from "../../model/difficulty";
 import { Post } from "../../model/post";
 import Database, { InsertPost } from "./interface";
-import MongoDB from "./mongodb";
-import { ObjectId } from "mongodb";
+import * as fs from "fs/promises";
+import * as path from "path";
+
+const DEFAULT_DB_PATH = path.join("rsrc", "localdb", "default.json");
+const DB_FILE = process.env.CURIO_FILE_DB_PATH || DEFAULT_DB_PATH;
+const DB_DIR = path.dirname(DB_FILE);
 
 const initialPosts: Post[] = [
   {
@@ -70,46 +74,79 @@ const initialPosts: Post[] = [
   },
 ];
 
-export default class LocalDB implements Database {
-  mongoDB: MongoDB;
+export default class FileDB implements Database {
+  private posts: Post[] = [];
+  private initialized: Promise<void>;
 
   constructor() {
-    this.mongoDB = new MongoDB("mongodb://localhost:27017");
+    this.initialized = this.init();
   }
 
-  async ensureInit() {
-    const promises = initialPosts.map(async (post) => {
-      // Insert directly via the MongoClient to avoid dupes.
-      const coll = new MongoClient("mongodb://localhost:27017")
-        .db("curio")
-        .collection("posts");
-      console.log(`inserting post ${post.title}`);
-      await coll.updateOne(
-        { _id: new ObjectId(post.id) },
-        { $set: post },
-        { upsert: true }
-      );
-    });
-    await Promise.all(promises);
+  private async init(): Promise<void> {
+    await fs.mkdir(DB_DIR, { recursive: true });
+    const posts = await this.readDB();
+    if (posts.length === 0) {
+      this.posts = initialPosts;
+      await this.writeDB();
+    } else {
+      this.posts = posts;
+    }
+  }
+
+  private async readDB(): Promise<Post[]> {
+    try {
+      const data = await fs.readFile(DB_FILE, "utf-8");
+      if (!data) return [];
+      return JSON.parse(data, (key, value) => {
+        if (key === "submittedAt" || key === "date") {
+          return new Date(value);
+        }
+        return value;
+      });
+    } catch (error: any) {
+      if (error.code === "ENOENT") {
+        return [];
+      }
+      throw error;
+    }
+  }
+
+  private async writeDB() {
+    await fs.writeFile(DB_FILE, JSON.stringify(this.posts, null, 2));
   }
 
   async allPosts(): Promise<Post[]> {
-    await this.ensureInit();
-    return this.mongoDB.allPosts();
+    await this.initialized;
+    return this.posts;
   }
 
   async postById(id: string): Promise<Post> {
-    await this.ensureInit();
-    return this.mongoDB.postById(id);
+    await this.initialized;
+    const post = this.posts.find((p) => p.id === id);
+    if (!post) {
+      return Promise.reject(`post not found: '${id}'`);
+    }
+    return post;
   }
 
   async submissionsById(id: string): Promise<Submission[]> {
-    await this.ensureInit();
-    return this.mongoDB.submissionsById(id);
+    await this.initialized;
+    const post = this.posts.find((p) => p.id === id);
+    if (!post) {
+      return Promise.reject(`post not found: '${id}'`);
+    }
+    return post.submissions || [];
   }
 
   async insertPost(post: InsertPost): Promise<string> {
-    await this.ensureInit();
-    return this.mongoDB.insertPost(post);
+    await this.initialized;
+    const newPost: Post = {
+      ...post,
+      id: new ObjectId().toHexString(),
+      submissions: [],
+    };
+    this.posts.push(newPost);
+    await this.writeDB();
+    return newPost.id;
   }
 }
