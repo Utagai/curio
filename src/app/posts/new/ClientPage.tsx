@@ -71,7 +71,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
           <h2 className="text-3xl">
             <span className="block md:inline-block">
               <EditableHeader
-                placeholder="Your Title"
+                placeholder="Curio Name"
                 onChange={(title) => setState({ ...state, title })}
               />
             </span>
@@ -112,15 +112,16 @@ export default function ClientPage({ username, token }: ClientPageProps) {
           <textarea
             className="editable bg-gray-700 w-full p-2 rounded-lg outline-none focus:ring-2 focus:ring-pink-400"
             rows={4}
-            placeholder="Your description"
+            placeholder="Curio description."
             onChange={(e) =>
               setState({ ...state, description: e.target.value })
             }
           ></textarea>
         </div>
 
-        <SubmitButton
-          onClick={() => {
+        <div className="flex justify-center md:justify-start">
+          <SubmitButton
+            onClick={() => {
             console.log(
               `PUT /api/posts. title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`,
             );
@@ -144,8 +145,9 @@ export default function ClientPage({ username, token }: ClientPageProps) {
               .catch((error) => {
                 console.error("Error creating post:", error);
               });
-          }}
-        />
+            }}
+          />
+        </div>
       </main>
     </>
   );
