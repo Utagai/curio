@@ -8,8 +8,8 @@ export default function About() {
         <p>[ku·ri·o]</p> <p className="italic">noun, plural cu·ri·os</p>
         <hr className="m-4" />
         <p>1. A rare, unusual, or intriguing object.</p>
-        <p>2. A website for sharing IRL easter eggs.</p>
-        <p>3. A work in progress.</p>
+        <p>2. An app for sharing IRL easter eggs.</p>
+        <p>3. Work in progress.</p>
       </div>
     </div>
   );
