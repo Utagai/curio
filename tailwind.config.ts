@@ -14,8 +14,8 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily: {
-        pacifico: ["var(--font-pacifico)"],
-        librecaslon: ["var(--font-librecaslon)"],
+        baloo2: ["var(--font-baloo2)"],
+        nunito: ["var(--font-nunito)"],
       },
     },
   },

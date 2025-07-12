@@ -66,7 +66,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
 
   return (
     <>
-      <main className="py-8 md:px-32 px-4px-32 m-4">
+      <main className="py-8 px-4px-32 m-2">
         <div className="mb-4">
           <h2 className="text-3xl">
             <span className="block md:inline-block">
@@ -84,8 +84,8 @@ export default function ClientPage({ username, token }: ClientPageProps) {
           </h2>
         </div>
 
-        <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
-          <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop mb-4 md:mb-0">
+        <div className="flex flex-col md:flex-row md:space-x-4 mb-4 bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200">
+          <div className="md:flex-1 mb-4 md:mb-0">
             <UploadImageButton
               onUpload={(file) => {
                 setState({ ...state, imageFile: file });
@@ -106,11 +106,11 @@ export default function ClientPage({ username, token }: ClientPageProps) {
           />
         </div>
 
-        <div className="bg-gray-800 p-2 rounded-lg shadow-drop mb-4">
+        <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200 mb-4">
           <h3 className="text-xl font-semibold mb-2">Description</h3>
 
           <textarea
-            className="editable bg-gray-700 w-full p-2 rounded-lg"
+            className="editable bg-gray-700 w-full p-2 rounded-lg outline-none focus:ring-2 focus:ring-pink-400"
             rows={4}
             placeholder="Your description"
             onChange={(e) =>

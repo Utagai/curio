@@ -32,8 +32,8 @@ export default function MapContainer({
     [],
   );
   return (
-    <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop">
-      <div className="w-full md:h-full aspect-square md:aspect-auto">
+    <div className="md:flex-1">
+      <div className="w-full md:h-full aspect-square md:aspect-auto rounded-lg overflow-hidden">
         <Map
           onMarkerChange={onMarkerChange}
           clickable={clickable}

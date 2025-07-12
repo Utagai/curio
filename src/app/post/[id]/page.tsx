@@ -8,7 +8,7 @@ export default async function Post({ params }: { params: { id: string } }) {
   const submissions = await getSubmissionsById(params.id);
   return (
     <>
-      <main className="py-8 md:px-32 px-4 m-2">
+      <main className="py-8 px-4">
         <div className="mb-4">
           <h2 className="text-2xl md:text-3xl">
             <span className="italic">{post.title} </span>
@@ -21,8 +21,8 @@ export default async function Post({ params }: { params: { id: string } }) {
           </h2>
         </div>
 
-        <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
-          <div className="md:flex-1 bg-gray-700 p-2 rounded-lg shadow-drop mb-4 md:mb-0">
+        <div className="flex flex-col md:flex-row md:space-x-4 mb-4 bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200">
+          <div className="md:flex-1 mb-4 md:mb-0">
             <img
               src={`/api/post/image?blobKey=${post.blobKey}`}
               alt="Not Found"
@@ -32,15 +32,24 @@ export default async function Post({ params }: { params: { id: string } }) {
           <MapContainer clickable={false} initialLocation={post.location} />
         </div>
 
-        <div className="bg-gray-800 p-2 rounded-lg shadow-drop mb-4">
-          <h3 className="font-semibold text-lg md:text-xl m-4">Description</h3>
-          <p className="text-sm md:text-base m-4">{post.description}</p>
+        <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200 mb-4">
+          <h3 className="font-semibold text-xl md:text-2xl mb-4 italic">
+            Description
+          </h3>
+          <p className="text-base md:text-md text-gray-400">
+            {post.description}
+          </p>
         </div>
 
-        <div className="space-y-4">
-          {submissions.map((submission, i) => (
-            <Submission key={i} {...submission} />
-          ))}
+        <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200 mb-4">
+          <h3 className="font-semibold text-xl md:text-2xl mb-4 italic">
+            Submissions
+          </h3>
+          <div>
+            {submissions.map((submission, i) => (
+              <Submission key={i} {...submission} />
+            ))}
+          </div>
         </div>
       </main>
     </>

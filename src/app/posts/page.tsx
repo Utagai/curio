@@ -24,20 +24,20 @@ export default async function Posts() {
       <div className="flex justify-center items-center space-x-1">
         <a
           href="#"
-          className="px-3 py-1 bg-gray-200 text-gray-500 rounded-md hover:bg-gray-300"
+          className="px-3 py-1 bg-gray-800 text-white rounded-lg border border-pink-200 shadow-xl hover:bg-gray-700"
         >
           1
         </a>
         <a
           href="#"
-          className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+          className="px-3 py-1 bg-gray-800 text-white rounded-lg border border-pink-200 shadow-xl hover:bg-gray-700"
         >
           2
         </a>
-        <span className="px-3 py-1">...</span>
+        <span className="px-3 py-1 text-pink-200">...</span>
         <a
           href="#"
-          className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+          className="px-3 py-1 bg-gray-800 text-white rounded-lg border border-pink-200 shadow-xl hover:bg-gray-700"
         >
           &gt;
         </a>

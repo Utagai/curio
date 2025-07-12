@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Pacifico, Libre_Caslon_Text } from "next/font/google";
+import { Baloo_2, Nunito } from "next/font/google";
 import NavBar from "./NavBar";
 
-const pacificoFont = Pacifico({
+const baloo2Font = Baloo_2({
   weight: "400",
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-pacifico",
+  variable: "--font-baloo2",
 });
 
-const libreCaslonTextFont = Libre_Caslon_Text({
-  weight: "400",
+const nunitoFont = Nunito({
+  weight: ["400", "600"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-librecaslon",
+  variable: "--font-nunito",
 });
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="en">
       <ClerkProvider>
         <body
-          className={`${pacificoFont.variable} ${libreCaslonTextFont.variable} bg-gray-900 text-white`}
+          className={`${baloo2Font.variable} ${nunitoFont.variable} font-nunito bg-gray-900 text-white mx-32 my-4`}
         >
           <NavBar />
           {children}
