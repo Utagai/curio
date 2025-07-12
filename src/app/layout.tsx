@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  RedirectToSignIn,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 import { Baloo_2, Nunito } from "next/font/google";
 import NavBar from "./NavBar";
 
@@ -34,15 +39,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <ClerkProvider>
-        <body
-          className={`${baloo2Font.variable} ${nunitoFont.variable} font-nunito bg-gray-900 text-white mx-32 my-4`}
-        >
-          <NavBar />
-          {children}
-        </body>
-      </ClerkProvider>
-    </html>
+    <ClerkProvider>
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+      <SignedIn>
+        <html lang="en">
+          <body
+            className={`${baloo2Font.variable} ${nunitoFont.variable} font-nunito bg-gray-900 text-white mx-32 my-4`}
+          >
+            <NavBar />
+            {children}
+          </body>
+        </html>
+      </SignedIn>
+    </ClerkProvider>
   );
 }
