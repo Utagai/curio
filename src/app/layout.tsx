@@ -46,7 +46,7 @@ export default function RootLayout({
       <SignedIn>
         <html lang="en">
           <body
-            className={`${baloo2Font.variable} ${nunitoFont.variable} font-nunito bg-gray-900 text-white mx-32 my-4`}
+            className={`${baloo2Font.variable} ${nunitoFont.variable} font-nunito bg-gray-900 text-white md:mx-32 my-4`}
           >
             <NavBar />
             {children}

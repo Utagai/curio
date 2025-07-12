@@ -8,7 +8,7 @@ export default async function Post({ params }: { params: { id: string } }) {
   const submissions = await getSubmissionsById(params.id);
   return (
     <>
-      <main className="py-8 px-4">
+      <main className="py-4 px-4">
         <div className="mb-4">
           <h2 className="text-2xl md:text-3xl">
             <span className="italic">{post.title} </span>

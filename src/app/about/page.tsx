@@ -10,6 +10,7 @@ export default function About() {
         <p>1. A rare, unusual, or intriguing object.</p>
         <p>2. An app for sharing IRL easter eggs.</p>
         <p>3. Work in progress.</p>
+        <p className="text-center">🚧 🐇 🚧</p>
       </div>
     </div>
   );
