@@ -9,6 +9,7 @@ const withPWA = require("next-pwa")({
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  productionBrowserSourceMaps: true,
   // Copies over the leaflet images to the public folder.
   // It is unclear why this step is necessary, since removing it stills to keep things working regardless.
   // We shamelessly stole it without understanding from:
