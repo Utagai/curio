@@ -1,5 +1,10 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+});
 
 /** @type {import('next').NextConfig} */
 
@@ -17,10 +22,10 @@ const nextConfig = {
             to: path.resolve(__dirname, "public", "leaflet", "images"),
           },
         ],
-      })
+      }),
     );
     return config;
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig);

@@ -21,8 +21,10 @@ const nunitoFont = Nunito({
 export const metadata: Metadata = {
   title: "Curio",
   description: "Share IRL easter eggs",
+  manifest: "/manifest.json",
   icons: {
     icon: "/logo.svg",
+    apple: "/icons/icon-192x192.png",
   },
 };
 
