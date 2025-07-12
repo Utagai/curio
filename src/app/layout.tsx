@@ -21,6 +21,9 @@ const libreCaslonTextFont = Libre_Caslon_Text({
 export const metadata: Metadata = {
   title: "Curio",
   description: "Share IRL easter eggs",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
