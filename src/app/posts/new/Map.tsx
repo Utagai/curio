@@ -58,7 +58,7 @@ export default function Map({
       <Circle
         center={[clickedLatLng.lat, clickedLatLng.lng]}
         pathOptions={{ color: "pink" }}
-        radius={800} // Is about 1/2 mile radius (the API's unit is meters). This means it should draw about a 1 mile diameter circle.
+        radius={200} // Is about 1/8 mile radius (the API's unit is meters). This means it should draw about a 1/4 mile diameter circle.
       ></Circle>
       <ListenerComponent
         setClickedLatLng={(latlng: LatLng) => {
