@@ -5,12 +5,17 @@ import * as path from "path";
 
 const BLOB_DIR = path.join(process.cwd(), "rsrc", "localpics");
 
+type Image = {
+  path: string,
+  kind: string,
+}
+
 export default class FileBlobStorage implements BlobStorage {
   private initialized: Promise<void>;
-  private blobs: Map<string, string>;
+  private blobs: Map<string, Image>;
 
   constructor() {
-    this.blobs = new Map<string, string>();
+    this.blobs = new Map();
     this.initialized = this.init();
   }
 
@@ -18,9 +23,10 @@ export default class FileBlobStorage implements BlobStorage {
     await fs.mkdir(BLOB_DIR, { recursive: true });
     const files = await fs.readdir(BLOB_DIR);
     for (const file of files) {
-      if (file.endsWith(".png")) {
-        const key = file.replace(".png", "");
-        this.blobs.set(key, path.join(BLOB_DIR, file));
+      const fileKind = file.split('.').pop()!;
+      if (fileKind == "png" || fileKind == "jpeg" || fileKind == "jpg") {
+        const key = file.replace(`.${fileKind}`, "");
+        this.blobs.set(key, { path: path.join(BLOB_DIR, file), kind: fileKind });
       }
     }
   }
@@ -41,13 +47,13 @@ export default class FileBlobStorage implements BlobStorage {
 
   async get(key: string): Promise<Blob> {
     await this.ensureInit();
-    const filePath = this.blobs.get(key);
-    if (!filePath) {
+    const blob = this.blobs.get(key);
+    if (!blob) {
       return Promise.reject(`blob not found: '${key}'`);
     }
     try {
-      const data = await fs.readFile(filePath);
-      return new Blob([data.buffer], { type: "image/png" });
+      const data = await fs.readFile(blob.path);
+      return new Blob([data.buffer], { type: `image/${blob.kind}` });
     } catch (error: any) {
       if (error.code === "ENOENT") {
         return Promise.reject(`blob not found: '${key}'`);
