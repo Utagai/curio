@@ -6,9 +6,9 @@ import * as path from "path";
 const BLOB_DIR = path.join(process.cwd(), "rsrc", "localpics");
 
 type Image = {
-  path: string,
-  kind: string,
-}
+  path: string;
+  kind: string;
+};
 
 export default class FileBlobStorage implements BlobStorage {
   private initialized: Promise<void>;
@@ -23,10 +23,13 @@ export default class FileBlobStorage implements BlobStorage {
     await fs.mkdir(BLOB_DIR, { recursive: true });
     const files = await fs.readdir(BLOB_DIR);
     for (const file of files) {
-      const fileKind = file.split('.').pop()!;
-      if (fileKind == "png" || fileKind == "jpeg" || fileKind == "jpg") {
-        const key = file.replace(`.${fileKind}`, "");
-        this.blobs.set(key, { path: path.join(BLOB_DIR, file), kind: fileKind });
+      const fileExt = file.split(".").pop()!;
+      if (fileExt == "png" || fileExt == "jpeg" || fileExt == "jpg") {
+        const key = file.replace(`.${fileExt}`, "");
+        this.blobs.set(key, {
+          path: path.join(BLOB_DIR, file),
+          kind: `image/${fileExt}`,
+        });
       }
     }
   }
@@ -41,7 +44,7 @@ export default class FileBlobStorage implements BlobStorage {
     const filePath = path.join(BLOB_DIR, `${key}.png`); // Assuming all blobs are PNGs
     const buffer = await blob.arrayBuffer().then((buf) => Buffer.from(buf));
     await fs.writeFile(filePath, buffer);
-    this.blobs.set(key, filePath);
+    this.blobs.set(key, { path: filePath, kind: blob.type });
     return Promise.resolve(key);
   }
 
