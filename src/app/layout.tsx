@@ -8,6 +8,7 @@ import {
 } from "@clerk/nextjs";
 import { Baloo_2, Nunito } from "next/font/google";
 import NavBar from "./NavBar";
+import "./styles/tippy.css";
 
 const baloo2Font = Baloo_2({
   weight: "400",
