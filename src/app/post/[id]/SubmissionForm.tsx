@@ -101,7 +101,7 @@ export default function SubmissionForm({ postId }: SubmissionFormProps) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             className="w-full h-10 p-2 bg-gray-700 rounded-lg outline-none focus:ring-2 focus:ring-pink-400 resize-none"
-            placeholder="Describe where and how you found this curio..."
+            placeholder="Any comments?"
             required
           />
         </div>
