@@ -42,7 +42,7 @@ export default class MongoDB implements Database {
   async submissionsById(id: string): Promise<Submission[]> {
     const coll = await getCollection();
     return coll
-      .aggregate([{ $match: { postId: id } }, { $project: { submissions: 1 } }])
+      .aggregate([{ $match: { _id: id } }, { $project: { submissions: 1 } }])
       .map((doc) => {
         return doc.submissions;
       })
@@ -57,18 +57,21 @@ export default class MongoDB implements Database {
     });
   }
 
-  async insertSubmission(postId: string, submission: InsertSubmission): Promise<void> {
+  async insertSubmission(
+    postId: string,
+    submission: InsertSubmission,
+  ): Promise<void> {
     const coll = await getCollection();
     const newSubmission: Submission = {
       ...submission,
       date: new Date(),
     };
-    
+
     const result = await coll.updateOne(
       { _id: new ObjectId(postId) },
-      { $push: { submissions: newSubmission } }
+      { $push: { submissions: newSubmission } },
     );
-    
+
     if (result.matchedCount === 0) {
       throw new Error(`post not found: '${postId}'`);
     }
