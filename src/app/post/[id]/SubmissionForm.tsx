@@ -1,0 +1,122 @@
+"use client";
+
+import { useState, useRef, ChangeEvent } from "react";
+import { submitFind } from "@/app/actions";
+import { useRouter } from "next/navigation";
+
+type SubmissionFormProps = {
+  postId: string;
+};
+
+export default function SubmissionForm({ postId }: SubmissionFormProps) {
+  const [imageSrc, setImageSrc] = useState<string | undefined>(
+    "https://placehold.co/200x150?text=Upload+Image",
+  );
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setImageFile(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImageSrc(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!imageFile || !message.trim()) {
+      alert("Please provide both an image and a message.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      formData.append("message", message);
+
+      await submitFind(postId, formData);
+
+      // Reset form
+      setImageFile(null);
+      setMessage("");
+      setImageSrc("https://placehold.co/200x150?text=Upload+Image");
+
+      // Refresh the page to show the new submission
+      router.refresh();
+    } catch (error) {
+      console.error("Error submitting find:", error);
+      alert("Failed to submit your find. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="bg-gray-800 p-4 rounded-lg shadow-xl border border-pink-200 mb-4">
+      <h3 className="font-semibold text-xl md:text-2xl mb-3 italic">
+        Submit Your Find
+      </h3>
+
+      <form onSubmit={handleSubmit} className="space-y-3">
+        {/* Image Upload */}
+        <div>
+          <div
+            className={`w-full rounded border-2 border-dashed border-gray-600 cursor-pointer ${
+              imageFile ? "h-auto" : "h-64 overflow-hidden"
+            }`}
+          >
+            <img
+              src={imageSrc}
+              alt="Upload"
+              className={`w-full object-cover ${
+                imageFile ? "h-auto" : "h-full"
+              }`}
+              onClick={() => fileInputRef.current?.click()}
+            />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+          </div>
+        </div>
+
+        {/* Message Input */}
+        <div>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="w-full h-10 p-2 bg-gray-700 rounded-lg outline-none focus:ring-2 focus:ring-pink-400 resize-none"
+            placeholder="Describe where and how you found this curio..."
+            required
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            disabled={isSubmitting || !imageFile || !message.trim()}
+            className="px-6 py-2 bg-pink-400 text-white rounded-lg hover:bg-pink-500 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
+          >
+            {isSubmitting ? "Submitting..." : "Submit Find"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}

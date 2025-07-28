@@ -1,5 +1,6 @@
 import DifficultyLabel from "../../Difficulty";
 import Submission from "./Submission";
+import SubmissionForm from "./SubmissionForm";
 import MapContainer from "@/app/posts/new/MapContainer";
 import { getPostById, getSubmissionsById } from "@/app/actions";
 
@@ -40,6 +41,8 @@ export default async function Post({ params }: { params: { id: string } }) {
             {post.description}
           </p>
         </div>
+
+        <SubmissionForm postId={params.id} />
 
         <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200 mb-4">
           <h3 className="font-semibold text-xl md:text-2xl mb-4 italic">

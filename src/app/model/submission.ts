@@ -1,4 +1,4 @@
-type Submission = {
+export type Submission = {
   submittedBy: string;
   date: Date;
   message: string;

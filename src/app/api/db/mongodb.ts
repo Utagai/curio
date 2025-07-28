@@ -1,6 +1,7 @@
 import { Collection, Document, MongoClient, ObjectId } from "mongodb";
 import { Post } from "../../model/post";
-import Database, { InsertPost } from "./interface";
+import { Submission } from "../../model/submission";
+import Database, { InsertPost, InsertSubmission } from "./interface";
 
 const database = "curio";
 const collection = "posts";
@@ -54,6 +55,23 @@ export default class MongoDB implements Database {
       console.log(`inserted post: ${result.insertedId}`);
       return result.insertedId.toHexString();
     });
+  }
+
+  async insertSubmission(postId: string, submission: InsertSubmission): Promise<void> {
+    const coll = await getCollection();
+    const newSubmission: Submission = {
+      ...submission,
+      date: new Date(),
+    };
+    
+    const result = await coll.updateOne(
+      { _id: new ObjectId(postId) },
+      { $push: { submissions: newSubmission } }
+    );
+    
+    if (result.matchedCount === 0) {
+      throw new Error(`post not found: '${postId}'`);
+    }
   }
 }
 

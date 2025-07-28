@@ -1,7 +1,8 @@
 import { ObjectId } from "mongodb";
 import { Difficulty } from "../../model/difficulty";
 import { Post } from "../../model/post";
-import Database, { InsertPost } from "./interface";
+import { Submission } from "../../model/submission";
+import Database, { InsertPost, InsertSubmission } from "./interface";
 import * as fs from "fs/promises";
 import * as path from "path";
 
@@ -148,5 +149,21 @@ export default class FileDB implements Database {
     this.posts.push(newPost);
     await this.writeDB();
     return newPost.id;
+  }
+
+  async insertSubmission(postId: string, submission: InsertSubmission): Promise<void> {
+    await this.initialized;
+    const post = this.posts.find((p) => p.id === postId);
+    if (!post) {
+      throw new Error(`post not found: '${postId}'`);
+    }
+    
+    const newSubmission: Submission = {
+      ...submission,
+      date: new Date(),
+    };
+    
+    post.submissions.push(newSubmission);
+    await this.writeDB();
   }
 }

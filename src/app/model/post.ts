@@ -1,5 +1,6 @@
 import { Difficulty } from "./difficulty";
 import { Latlng } from "./latlng";
+import { Submission } from "./submission";
 
 export type Post = {
   id: string;
