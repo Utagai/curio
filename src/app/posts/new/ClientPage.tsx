@@ -63,7 +63,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
         },
         {
           enableHighAccuracy: true,
-          timeout: 2000,
+          timeout: 10000,
           maximumAge: 0,
         },
       );
