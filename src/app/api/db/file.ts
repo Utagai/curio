@@ -37,6 +37,7 @@ const initialPosts: Post[] = [
         date: new Date("December 3, 2023"),
       },
     ],
+    closed: false,
   },
   {
     id: new ObjectId("6589249eda75b822c4d872ff").toString(),
@@ -58,6 +59,7 @@ const initialPosts: Post[] = [
         date: new Date("November 18, 2023"),
       },
     ],
+    closed: false,
   },
   {
     id: new ObjectId("658924b1da75b822c4d87300").toString(),
@@ -72,6 +74,7 @@ const initialPosts: Post[] = [
       lng: -74.9703,
     },
     submissions: [],
+    closed: false,
   },
 ];
 
@@ -145,6 +148,7 @@ export default class FileDB implements Database {
       ...post,
       id: new ObjectId().toHexString(),
       submissions: [],
+      closed: false,
     };
     this.posts.push(newPost);
     await this.writeDB();
@@ -164,6 +168,16 @@ export default class FileDB implements Database {
     };
     
     post.submissions.push(newSubmission);
+    await this.writeDB();
+  }
+
+  async closePost(id: string): Promise<void> {
+    await this.initialized;
+    const post = this.posts.find((p) => p.id === id);
+    if (!post) {
+      throw new Error(`post not found: '${id}'`);
+    }
+    post.closed = true;
     await this.writeDB();
   }
 }

@@ -126,3 +126,26 @@ export async function submitFind(postId: string, formData: FormData) {
 
   await db.insertSubmission(postId, submission);
 }
+
+export async function closePost(postId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("unauthorized");
+  }
+
+  let client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  if (!user.username) {
+    throw new Error("unreachable: user without username in curio");
+  }
+
+  const db = dbFactory();
+  
+  // Get the post to verify the user is the author
+  const post = await db.postById(postId);
+  if (post.author !== user.username) {
+    throw new Error("unauthorized: only the post author can close the post");
+  }
+
+  await db.closePost(postId);
+}

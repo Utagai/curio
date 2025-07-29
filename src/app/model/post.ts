@@ -12,4 +12,5 @@ export type Post = {
   submittedAt: Date;
   location: Latlng;
   submissions: Submission[];
+  closed: boolean;
 };

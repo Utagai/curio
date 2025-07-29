@@ -1,7 +1,7 @@
 import { Post } from "../../model/post";
 import { Submission } from "../../model/submission";
 
-export type InsertPost = Omit<Post, "id">;
+export type InsertPost = Omit<Post, "id" | "closed">;
 export type InsertSubmission = Omit<Submission, "date">;
 
 export default interface Database {
@@ -10,4 +10,5 @@ export default interface Database {
   submissionsById(id: string): Promise<Submission[]>;
   insertPost(post: InsertPost): Promise<string>;
   insertSubmission(postId: string, submission: InsertSubmission): Promise<void>;
+  closePost(id: string): Promise<void>;
 }

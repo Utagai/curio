@@ -7,9 +7,10 @@ import SubmitButton from "@/app/posts/new/SubmitButton";
 
 type SubmissionFormProps = {
   postId: string;
+  disabled?: boolean;
 };
 
-export default function SubmissionForm({ postId }: SubmissionFormProps) {
+export default function SubmissionForm({ postId, disabled = false }: SubmissionFormProps) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(
     "https://placehold.co/200x150?text=Upload+Image",
   );
@@ -63,6 +64,19 @@ export default function SubmissionForm({ postId }: SubmissionFormProps) {
       setIsSubmitting(false);
     }
   };
+
+  if (disabled) {
+    return (
+      <div className="bg-gray-800 p-4 rounded-lg shadow-xl border border-pink-200 mb-4">
+        <h3 className="font-semibold text-xl md:text-2xl mb-3 italic text-gray-500">
+          Submit Your Find
+        </h3>
+        <p className="text-gray-400 text-center py-8">
+          This post is closed and no longer accepting submissions.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-800 p-4 rounded-lg shadow-xl border border-pink-200 mb-4">

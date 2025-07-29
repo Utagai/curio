@@ -11,6 +11,7 @@ type PostCardProps = {
   author: string;
   title: string;
   difficulty: Difficulty;
+  closed?: boolean;
 };
 
 export default function PostCard({
@@ -19,6 +20,7 @@ export default function PostCard({
   author,
   title,
   difficulty,
+  closed = false,
 }: PostCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -48,7 +50,7 @@ export default function PostCard({
         </div>
         <div className="p-4">
           <h3 className="font-semibold">
-            {title} by {author}
+            <span className={closed ? 'line-through text-gray-500' : ''}>{title}</span> by {author}
           </h3>
           <div className="my-2">
             <DifficultyLabel diff={difficulty} />

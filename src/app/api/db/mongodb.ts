@@ -52,7 +52,11 @@ export default class MongoDB implements Database {
 
   async insertPost(post: InsertPost): Promise<string> {
     const coll = await getCollection();
-    return coll.insertOne(post).then((result) => {
+    const newPost = {
+      ...post,
+      closed: false,
+    };
+    return coll.insertOne(newPost).then((result) => {
       console.log(`inserted post: ${result.insertedId}`);
       return result.insertedId.toHexString();
     });
@@ -77,6 +81,18 @@ export default class MongoDB implements Database {
       throw new Error(`post not found: '${postId}'`);
     }
   }
+
+  async closePost(id: string): Promise<void> {
+    const coll = await getCollection();
+    const result = await coll.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { closed: true } },
+    );
+
+    if (result.matchedCount === 0) {
+      throw new Error(`post not found: '${id}'`);
+    }
+  }
 }
 
 function postFromDoc(doc: Document): Post {
@@ -90,5 +106,6 @@ function postFromDoc(doc: Document): Post {
     location: doc.location,
     submittedAt: doc.submittedAt,
     submissions: doc.submissions,
+    closed: doc.closed || false,
   };
 }
