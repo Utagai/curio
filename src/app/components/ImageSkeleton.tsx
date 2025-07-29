@@ -8,6 +8,7 @@ export default function ImageSkeleton({ height = "h-48" }: ImageSkeletonProps) {
   return (
     <div
       className={`w-full ${height} bg-gray-300 animate-pulse rounded-t-lg flex items-center justify-center`}
+      style={{ aspectRatio: height === "h-48" ? undefined : "16/9" }}
     >
       <div className="text-gray-500">
         <svg
@@ -26,4 +27,3 @@ export default function ImageSkeleton({ height = "h-48" }: ImageSkeletonProps) {
     </div>
   );
 }
-

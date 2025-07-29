@@ -23,18 +23,18 @@ export default function PostCard({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <a href={`/post/${id}`}>
-      <button className="bg-green text-left rounded-lg overflow-hidden shadow-xl border border-pink-200 transform transition-transform duration-500 hover:scale-105 bg-gray-800">
+    <a href={`/post/${id}`} className="w-full md:w-auto md:flex-shrink-0">
+      <button className="bg-green text-left rounded-lg overflow-hidden shadow-xl border border-pink-200 transform transition-transform duration-500 hover:scale-105 bg-gray-800 w-full md:w-80">
         <div className="relative">
           {!imageLoaded && (
             <div className="absolute inset-0 z-10">
-              <ImageSkeleton height="h-48" />
+              <ImageSkeleton />
             </div>
           )}
           <img
             src={imageUri}
             alt="preview image"
-            className={`w-full h-48 object-cover transition-opacity duration-300 ${
+            className={`w-full object-cover transition-opacity duration-300 ${
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setImageLoaded(true)}
