@@ -32,8 +32,8 @@ export default function SubmissionForm({ postId }: SubmissionFormProps) {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
 
     if (!imageFile || !message.trim()) {
       alert("Please provide both an image and a message.");
