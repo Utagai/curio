@@ -2,13 +2,17 @@
 
 type ImageSkeletonProps = {
   height?: string;
+  fullHeight?: boolean;
 };
 
-export default function ImageSkeleton({ height = "h-48" }: ImageSkeletonProps) {
+export default function ImageSkeleton({ height = "h-48", fullHeight = false }: ImageSkeletonProps) {
+  const heightClass = fullHeight ? "h-full" : height;
+  const style = fullHeight ? {} : { aspectRatio: height === "h-48" ? undefined : "16/9" };
+  
   return (
     <div
-      className={`w-full ${height} bg-gray-300 animate-pulse rounded-t-lg flex items-center justify-center`}
-      style={{ aspectRatio: height === "h-48" ? undefined : "16/9" }}
+      className={`w-full ${heightClass} bg-gray-300 animate-pulse rounded-t-lg flex items-center justify-center`}
+      style={style}
     >
       <div className="text-gray-500">
         <svg
