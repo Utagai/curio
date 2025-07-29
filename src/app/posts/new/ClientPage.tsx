@@ -14,6 +14,34 @@ import { DEFAULT_LOC_LATLNG } from "@/app/model/latlng";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
+// Convert feet to degrees (approximately)
+// 1 degree of latitude ≈ 364,000 feet
+// 1 degree of longitude varies by latitude, but we'll use an approximation
+const FEET_TO_DEGREES_LAT = 1 / 364000;
+const FEET_TO_DEGREES_LNG = 1 / 288200; // Approximate for mid-latitudes
+
+function addLocationJitter(
+  lat: number,
+  lng: number,
+): { lat: number; lng: number } {
+  // Random distance between 250-300 feet
+  const minDistance = 250;
+  const maxDistance = 300;
+  const distance = Math.random() * (maxDistance - minDistance) + minDistance;
+
+  // Random direction (0 to 2π radians)
+  const angle = Math.random() * 2 * Math.PI;
+
+  // Convert to coordinate offsets
+  const latOffset = distance * Math.cos(angle) * FEET_TO_DEGREES_LAT;
+  const lngOffset = distance * Math.sin(angle) * FEET_TO_DEGREES_LNG;
+
+  return {
+    lat: lat + latOffset,
+    lng: lng + lngOffset,
+  };
+}
+
 type newPostState = {
   username: string | null | undefined;
   token: string | null;
@@ -50,9 +78,10 @@ export default function ClientPage({ username, token }: ClientPageProps) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          const jitteredLocation = addLocationJitter(latitude, longitude);
           setState((prevState) => ({
             ...prevState,
-            loc: { lat: latitude, lng: longitude },
+            loc: { lat: jitteredLocation.lat, lng: jitteredLocation.lng },
           }));
         },
         (error) => {
@@ -122,7 +151,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
             <textarea
               className="editable bg-gray-700 w-full p-2 rounded-lg outline-none focus:ring-2 focus:ring-pink-400"
               rows={4}
-              placeholder="Curio description."
+              placeholder="Describe your curio. (FYI: If you allowed geolocation permissions, the shown map pin has been automatically jittered.)"
               onChange={(e) =>
                 setState({ ...state, description: e.target.value })
               }
