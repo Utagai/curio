@@ -1,9 +1,9 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import ClientPage from "./ClientPage";
+import NewPostClientPage from "./NewPostClientPage";
 
 export default async function NewPost() {
   const user = await currentUser();
   const { getToken } = await auth();
   const token = await getToken();
-  return <ClientPage username={user?.username} token={token} />;
+  return <NewPostClientPage username={user?.username} token={token} />;
 }
