@@ -19,6 +19,10 @@ export function blobStorageFactory(): BlobStorage {
 export function dbFactory(): Database {
   switch (process.env.NODE_ENV) {
     case "development":
+      // In development, use MongoDB if MONGODB_URI is set, otherwise use FileDB
+      if (process.env.MONGODB_URI) {
+        return new MongoDB();
+      }
       return new FileDB();
     case "production":
       return new MongoDB();
