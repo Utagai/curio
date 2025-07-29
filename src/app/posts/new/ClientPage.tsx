@@ -208,7 +208,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
                   setIsSubmitting(false);
                 }
               }}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !state.title?.trim() || !state.imageFile || !state.description?.trim()}
               isLoading={isSubmitting}
             >
               Submit
