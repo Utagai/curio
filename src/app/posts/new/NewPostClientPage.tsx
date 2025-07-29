@@ -178,7 +178,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
             ></textarea>
           </div>
 
-          <div className="flex justify-center md:justify-start">
+          <div className="flex justify-center">
             <SubmitButton
               onClick={async () => {
                 console.log(
