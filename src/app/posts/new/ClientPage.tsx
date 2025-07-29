@@ -13,6 +13,7 @@ import DifficultySelector from "./DifficultySelector";
 import { DEFAULT_LOC_LATLNG } from "@/app/model/latlng";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import LoadingIndicator from "@/app/components/LoadingIndicator";
 
 // Convert feet to degrees (approximately)
 // 1 degree of latitude ≈ 364,000 feet
@@ -62,6 +63,8 @@ type ClientPageProps = {
   username: string | null | undefined;
   token: string | null;
 };
+type GeolocationState = "loading" | "success" | "fallback";
+
 export default function ClientPage({ username, token }: ClientPageProps) {
   const [state, setState] = useState<newPostState>({
     username,
@@ -69,6 +72,8 @@ export default function ClientPage({ username, token }: ClientPageProps) {
     loc: DEFAULT_LOC_LATLNG,
     difficulty: Difficulty.MEDIUM,
   } as newPostState);
+  const [geolocationState, setGeolocationState] =
+    useState<GeolocationState>("loading");
   const router = useRouter();
 
   // TODO: This is a hack until we set up something like Sentry or whatever frontend logging solution we decide on.
@@ -84,12 +89,14 @@ export default function ClientPage({ username, token }: ClientPageProps) {
             ...prevState,
             loc: { lat: jitteredLocation.lat, lng: jitteredLocation.lng },
           }));
+          setGeolocationState("success");
         },
         (error) => {
           console.error("Error getting user location:", error);
           setTippyMsg(
             `error getting user location: (msg: ${error.message}, code: ${error.code})`,
           );
+          setGeolocationState("fallback");
         },
         {
           enableHighAccuracy: true,
@@ -97,6 +104,9 @@ export default function ClientPage({ username, token }: ClientPageProps) {
           maximumAge: 0,
         },
       );
+    } else {
+      // No geolocation support - just use default location
+      setGeolocationState("fallback");
     }
   }, []);
 
@@ -137,13 +147,21 @@ export default function ClientPage({ username, token }: ClientPageProps) {
                 }}
               />
             </div>
-            <MapContainer
-              onMarkerChange={(loc) => {
-                setState({ ...state, loc });
-              }}
-              clickable={true}
-              initialLocation={state.loc}
-            />
+            {geolocationState === "loading" ? (
+              <div className="md:flex-1">
+                <div className="w-full md:h-full aspect-square md:aspect-auto rounded-lg overflow-hidden bg-gray-700">
+                  <LoadingIndicator message="Getting your location..." />
+                </div>
+              </div>
+            ) : (
+              <MapContainer
+                onMarkerChange={(loc) => {
+                  setState({ ...state, loc });
+                }}
+                clickable={true}
+                initialLocation={state.loc}
+              />
+            )}
           </div>
 
           <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200 mb-4">

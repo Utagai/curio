@@ -3,6 +3,7 @@
 import { Latlng } from "@/app/model/latlng";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
+import LoadingIndicator from "@/app/components/LoadingIndicator";
 
 // Do not confuse this with MapContainer from react-leaflet. This is a container
 // for the Map component in this project.
@@ -22,11 +23,7 @@ export default function MapContainer({
   const Map = useMemo(
     () =>
       dynamic(() => import("./Map"), {
-        loading: () => (
-          <div className="flex items-center justify-center h-full">
-            <h1 className="text-3xl bg-gray-700">loading map...</h1>
-          </div>
-        ),
+        loading: () => <LoadingIndicator message="Loading map..." />,
         ssr: false,
       }),
     [],
