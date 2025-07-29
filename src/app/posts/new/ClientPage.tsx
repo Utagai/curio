@@ -204,7 +204,9 @@ export default function ClientPage({ username, token }: ClientPageProps) {
                     console.error("Error creating post:", error);
                   });
               }}
-            />
+            >
+              Submit
+            </SubmitButton>
           </div>
         </main>
       </Tippy>
