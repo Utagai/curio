@@ -74,6 +74,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
   } as newPostState);
   const [geolocationState, setGeolocationState] =
     useState<GeolocationState>("loading");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   // TODO: This is a hack until we set up something like Sentry or whatever frontend logging solution we decide on.
@@ -179,31 +180,36 @@ export default function ClientPage({ username, token }: ClientPageProps) {
 
           <div className="flex justify-center md:justify-start">
             <SubmitButton
-              onClick={() => {
+              onClick={async () => {
                 console.log(
                   `PUT /api/posts. title: ${state.title}, description: ${state.description}, difficulty: ${state.difficulty}, imageFile: ${state.imageFile}, loc: ${state.loc}`,
                 );
 
-                const formData = new FormData();
-                formData.append("title", state.title);
-                formData.append("description", state.description);
-                formData.append("difficulty", state.difficulty);
-                formData.append("image", state.imageFile);
-                formData.append("lat", state.loc.lat.toString());
-                formData.append("lng", state.loc.lng.toString());
-                formData.append("author", state.username!);
-                formData.append("time", new Date().toISOString());
+                setIsSubmitting(true);
 
-                createPost(formData)
-                  .then((post) => {
-                    if (post) {
-                      router.push(`/post/${post.id}`);
-                    }
-                  })
-                  .catch((error) => {
-                    console.error("Error creating post:", error);
-                  });
+                try {
+                  const formData = new FormData();
+                  formData.append("title", state.title);
+                  formData.append("description", state.description);
+                  formData.append("difficulty", state.difficulty);
+                  formData.append("image", state.imageFile);
+                  formData.append("lat", state.loc.lat.toString());
+                  formData.append("lng", state.loc.lng.toString());
+                  formData.append("author", state.username!);
+                  formData.append("time", new Date().toISOString());
+
+                  const post = await createPost(formData);
+                  if (post) {
+                    router.push(`/post/${post.id}`);
+                  }
+                } catch (error) {
+                  console.error("Error creating post:", error);
+                } finally {
+                  setIsSubmitting(false);
+                }
               }}
+              disabled={isSubmitting}
+              isLoading={isSubmitting}
             >
               Submit
             </SubmitButton>

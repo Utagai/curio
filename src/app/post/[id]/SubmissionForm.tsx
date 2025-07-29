@@ -3,6 +3,7 @@
 import { useState, useRef, ChangeEvent } from "react";
 import { submitFind } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import SubmitButton from "@/app/posts/new/SubmitButton";
 
 type SubmissionFormProps = {
   postId: string;
@@ -108,13 +109,14 @@ export default function SubmissionForm({ postId }: SubmissionFormProps) {
 
         {/* Submit Button */}
         <div className="flex justify-center">
-          <button
+          <SubmitButton
             type="submit"
+            onClick={handleSubmit}
             disabled={isSubmitting || !imageFile || !message.trim()}
-            className="px-6 py-2 bg-pink-400 text-white rounded-lg hover:bg-pink-500 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
+            isLoading={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Submit Find"}
-          </button>
+          </SubmitButton>
         </div>
       </form>
     </div>
