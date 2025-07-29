@@ -17,16 +17,27 @@ export async function createPost(formData: FormData) {
 
   const blobKey = await blobStorage.upload(file);
 
+  const title = extractStringValue(formData, "title");
+  const description = extractStringValue(formData, "description");
+
+  // Validate title and description are not empty
+  if (!title.trim()) {
+    throw new Error("title cannot be empty");
+  }
+  if (!description.trim()) {
+    throw new Error("description cannot be empty");
+  }
+
   const insert: InsertPost = {
     blobKey: blobKey,
-    title: extractStringValue(formData, "title"),
+    title,
     author: extractStringValue(formData, "author"),
     submittedAt: extractDateValue(formData, "time"),
     location: {
       lat: extractNumberValue(formData, "lat"),
       lng: extractNumberValue(formData, "lng"),
     },
-    description: extractStringValue(formData, "description"),
+    description,
     difficulty: extractDifficultyValue(formData, "difficulty"),
     submissions: [],
   };
