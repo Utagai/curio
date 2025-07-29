@@ -41,15 +41,13 @@ export default class MongoDB implements Database {
 
   async submissionsById(postId: string): Promise<Submission[]> {
     const coll = await getCollection();
-    return coll
-      .aggregate([
-        { $match: { _id: new ObjectId(postId) } },
-        { $project: { submissions: 1 } },
-      ])
-      .map((doc) => {
-        return doc.submissions;
-      })
-      .toArray();
+    const post = await coll.findOne({ _id: new ObjectId(postId) });
+
+    if (!post) {
+      return Promise.reject(`post not found: ${postId}`);
+    }
+
+    return postFromDoc(post).submissions;
   }
 
   async insertPost(post: InsertPost): Promise<string> {
