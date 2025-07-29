@@ -101,7 +101,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
 
   return (
     <>
-      <Tippy content={tippyMsg} theme="error">
+      <Tippy content={tippyMsg} theme="error" visible={!!tippyMsg}>
         <main className="py-8 px-4px-32 m-2">
           <div className="mb-4">
             <h2 className="text-3xl">
