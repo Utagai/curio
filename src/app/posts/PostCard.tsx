@@ -28,7 +28,7 @@ export default function PostCard({
         <div className="relative">
           {!imageLoaded && (
             <div className="absolute inset-0 z-10">
-              <ImageSkeleton />
+              <ImageSkeleton height="h-48" />
             </div>
           )}
           <img

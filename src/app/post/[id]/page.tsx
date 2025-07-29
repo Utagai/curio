@@ -1,6 +1,7 @@
 import DifficultyLabel from "../../Difficulty";
 import Submission from "./Submission";
 import SubmissionForm from "./SubmissionForm";
+import PostImage from "./PostImage";
 import MapContainer from "@/app/posts/new/MapContainer";
 import { getPostById, getSubmissionsById } from "@/app/actions";
 
@@ -24,11 +25,7 @@ export default async function Post({ params }: { params: { id: string } }) {
 
         <div className="flex flex-col md:flex-row md:space-x-4 mb-4 bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200">
           <div className="md:flex-1 mb-4 md:mb-0">
-            <img
-              src={`/api/post/image?blobKey=${post.blobKey}`}
-              alt="Not Found"
-              className="w-full h-auto rounded-lg"
-            />
+            <PostImage blobKey={post.blobKey} alt="Post image" />
           </div>
           <MapContainer clickable={false} initialLocation={post.location} />
         </div>

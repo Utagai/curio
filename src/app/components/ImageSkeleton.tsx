@@ -1,8 +1,14 @@
 "use client";
 
-export default function ImageSkeleton() {
+type ImageSkeletonProps = {
+  height?: string;
+};
+
+export default function ImageSkeleton({ height = "h-48" }: ImageSkeletonProps) {
   return (
-    <div className="w-full h-48 bg-gray-300 animate-pulse rounded-t-lg flex items-center justify-center">
+    <div
+      className={`w-full ${height} bg-gray-300 animate-pulse rounded-t-lg flex items-center justify-center`}
+    >
       <div className="text-gray-500">
         <svg
           className="w-8 h-8"
@@ -20,3 +26,4 @@ export default function ImageSkeleton() {
     </div>
   );
 }
+
