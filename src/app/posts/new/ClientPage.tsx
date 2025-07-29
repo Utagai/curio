@@ -71,6 +71,7 @@ export default function ClientPage({ username, token }: ClientPageProps) {
   } as newPostState);
   const router = useRouter();
 
+  // TODO: This is a hack until we set up something like Sentry or whatever frontend logging solution we decide on.
   const [tippyMsg, setTippyMsg] = useState<string>("");
 
   useEffect(() => {
