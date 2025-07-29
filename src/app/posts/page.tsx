@@ -5,7 +5,10 @@ export const dynamic = "force-dynamic";
 
 export default async function Posts() {
   const posts = await getAllPosts();
-  const sortedPosts = posts.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+  const sortedPosts = posts.sort(
+    (a, b) =>
+      new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime(),
+  );
   return (
     <main className="container mx-auto p-4">
       <h2 className="text-3xl font-bold text-center mb-6">Posts</h2>
@@ -20,28 +23,6 @@ export default async function Posts() {
             author={post.author}
           />
         ))}
-      </div>
-
-      <div className="flex justify-center items-center space-x-1">
-        <a
-          href="#"
-          className="px-3 py-1 bg-gray-800 text-white rounded-lg border border-pink-200 shadow-xl hover:bg-gray-700"
-        >
-          1
-        </a>
-        <a
-          href="#"
-          className="px-3 py-1 bg-gray-800 text-white rounded-lg border border-pink-200 shadow-xl hover:bg-gray-700"
-        >
-          2
-        </a>
-        <span className="px-3 py-1 text-pink-200">...</span>
-        <a
-          href="#"
-          className="px-3 py-1 bg-gray-800 text-white rounded-lg border border-pink-200 shadow-xl hover:bg-gray-700"
-        >
-          &gt;
-        </a>
       </div>
     </main>
   );
