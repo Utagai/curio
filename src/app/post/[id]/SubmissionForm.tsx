@@ -3,13 +3,18 @@
 import { useState, useRef, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/app/posts/new/SubmitButton";
+import { compressImage } from "@/utils/imageCompression";
+import { submitFind } from "@/app/actions";
 
 type SubmissionFormProps = {
   postId: string;
   disabled?: boolean;
 };
 
-export default function SubmissionForm({ postId, disabled = false }: SubmissionFormProps) {
+export default function SubmissionForm({
+  postId,
+  disabled = false,
+}: SubmissionFormProps) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(
     "https://placehold.co/200x150?text=Upload+Image",
   );
@@ -43,20 +48,19 @@ export default function SubmissionForm({ postId, disabled = false }: SubmissionF
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("postId", postId);
-      formData.append("image", imageFile);
-      formData.append("message", message);
-
-      const response = await fetch("/api/submissions", {
-        method: "POST",
-        body: formData,
+      // Compress the image before uploading
+      const compressedImage = await compressImage(imageFile, {
+        maxWidth: 1500,
+        maxHeight: 1500,
+        quality: 0.9,
+        outputFormat: 'image/jpeg'
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "failed to submit");
-      }
+      const formData = new FormData();
+      formData.append("image", compressedImage);
+      formData.append("message", message);
+
+      await submitFind(postId, formData);
 
       // Reset form
       setImageFile(null);
