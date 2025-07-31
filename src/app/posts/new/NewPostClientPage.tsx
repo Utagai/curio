@@ -14,6 +14,7 @@ import { DEFAULT_LOC_LATLNG } from "@/app/model/latlng";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import LoadingIndicator from "@/app/components/LoadingIndicator";
+import { compressImage } from "@/utils/imageCompression";
 
 // Convert feet to degrees (approximately)
 // 1 degree of latitude ≈ 364,000 feet
@@ -188,11 +189,19 @@ export default function ClientPage({ username, token }: ClientPageProps) {
                 setIsSubmitting(true);
 
                 try {
+                  // Compress the image before uploading
+                  const compressedImage = await compressImage(state.imageFile, {
+                    maxWidth: 1500,
+                    maxHeight: 1500,
+                    quality: 0.9,
+                    outputFormat: 'image/jpeg'
+                  });
+
                   const formData = new FormData();
                   formData.append("title", state.title);
                   formData.append("description", state.description);
                   formData.append("difficulty", state.difficulty);
-                  formData.append("image", state.imageFile);
+                  formData.append("image", compressedImage);
                   formData.append("lat", state.loc.lat.toString());
                   formData.append("lng", state.loc.lng.toString());
                   formData.append("author", state.username!);
