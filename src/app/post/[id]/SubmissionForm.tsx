@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, ChangeEvent } from "react";
-import { submitFind } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/app/posts/new/SubmitButton";
 
@@ -45,10 +44,19 @@ export default function SubmissionForm({ postId, disabled = false }: SubmissionF
 
     try {
       const formData = new FormData();
+      formData.append("postId", postId);
       formData.append("image", imageFile);
       formData.append("message", message);
 
-      await submitFind(postId, formData);
+      const response = await fetch("/api/submissions", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "failed to submit");
+      }
 
       // Reset form
       setImageFile(null);
