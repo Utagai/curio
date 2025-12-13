@@ -7,9 +7,10 @@ import ClosePostButton from "./ClosePostButton";
 import { getPostById, getSubmissionsById } from "@/app/actions";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
-export default async function Post({ params }: { params: { id: string } }) {
-  const post = await getPostById(params.id)!;
-  const submissions = await getSubmissionsById(params.id);
+export default async function Post({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const post = await getPostById(id)!;
+  const submissions = await getSubmissionsById(id);
   
   // Get current user information
   const { userId } = await auth();
@@ -57,7 +58,7 @@ export default async function Post({ params }: { params: { id: string } }) {
           </p>
         </div>
 
-        <SubmissionForm postId={params.id} disabled={post.closed} />
+        <SubmissionForm postId={id} disabled={post.closed} />
 
         <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-pink-200 mb-4">
           <h3 className="font-semibold text-xl md:text-2xl mb-4 italic">
@@ -70,8 +71,8 @@ export default async function Post({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        <ClosePostButton 
-          postId={params.id}
+        <ClosePostButton
+          postId={id}
           postAuthor={post.author}
           currentUsername={currentUsername}
           isClosed={post.closed}
