@@ -96,6 +96,12 @@ The project follows the standard Next.js App Router structure.
 
     Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+    The test user credentials are:
+    ```
+    Email: curiotest747@gmail.com
+    Password: curiotest747@gmail.com
+    ```
+
 ## Available Scripts
 
 *   `npm run dev`: Starts the development server with a local MongoDB instance.
