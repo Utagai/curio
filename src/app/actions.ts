@@ -8,6 +8,17 @@ import { InsertPost, InsertSubmission } from "./api/db/interface";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export async function createPost(formData: FormData) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("unauthorized");
+  }
+
+  let client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  if (!user.username) {
+    throw new Error("unreachable: user without username in curio");
+  }
+
   const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
   const file = formData.get("image");
 
@@ -82,16 +93,31 @@ function extractDifficultyValue(formData: FormData, key: string): Difficulty {
 }
 
 export async function getAllPosts(): Promise<Post[]> {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("unauthorized");
+  }
+
   const db = dbFactory();
   return db.allPosts();
 }
 
 export async function getPostById(id: string): Promise<Post> {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("unauthorized");
+  }
+
   const db = dbFactory();
   return db.postById(id);
 }
 
 export async function getSubmissionsById(id: string): Promise<Submission[]> {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("unauthorized");
+  }
+
   const db = dbFactory();
   return db.submissionsById(id);
 }
