@@ -10,6 +10,11 @@ const withPWA = require("next-pwa")({
 
 const nextConfig = {
   productionBrowserSourceMaps: true,
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "5mb",
+    },
+  },
   // Copies over the leaflet images to the public folder.
   // It is unclear why this step is necessary, since removing it stills to keep things working regardless.
   // We shamelessly stole it without understanding from:
