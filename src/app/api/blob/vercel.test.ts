@@ -2,14 +2,13 @@ import path from "path";
 import VercelBlobStorage from "./vercel";
 import { ObjectId } from "mongodb";
 import { del } from "@vercel/blob";
-import { after } from "node:test";
 
 const uploadedUrls: string[] = [];
 
 class TestWrapperBlobStorage extends VercelBlobStorage {
   static testPrefix = path.join(
     "vercel-blob-storage-tests",
-    new ObjectId().toString() // Use a randomly generated subdirectory to avoid clashing with versions of this test running elsewhere.
+    new ObjectId().toString(), // Use a randomly generated subdirectory to avoid clashing with versions of this test running elsewhere.
   );
 
   constructor() {
@@ -25,7 +24,9 @@ class TestWrapperBlobStorage extends VercelBlobStorage {
 
 afterAll(async () => {
   const promises = uploadedUrls.map((url) => {
-    return del(url);
+    return del(url, {
+      token: process.env.BLOBS_READ_WRITE_TOKEN!,
+    });
   });
   await Promise.all(promises);
 });
@@ -35,6 +36,5 @@ test("upload + fetch", async () => {
   const expectedBlob = new Blob(["hello world"]);
   const key = await vercelBlobStorage.upload(expectedBlob);
   const actualBlob = await vercelBlobStorage.get(key);
-  const text = await actualBlob.text();
   expect(await actualBlob.text()).toEqual(await expectedBlob.text());
 });
