@@ -3,7 +3,7 @@
 import { useState, useRef, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/app/posts/new/SubmitButton";
-import { compressImage } from "@/utils/imageCompression";
+import { uploadImage } from "@/utils/image";
 import { submitFind } from "@/app/actions";
 
 type SubmissionFormProps = {
@@ -48,16 +48,10 @@ export default function SubmissionForm({
     setIsSubmitting(true);
 
     try {
-      // Compress the image before uploading
-      const compressedImage = await compressImage(imageFile, {
-        maxWidth: 1500,
-        maxHeight: 1500,
-        quality: 0.9,
-        outputFormat: 'image/jpeg'
-      });
+      const blobKey = await uploadImage(imageFile);
 
       const formData = new FormData();
-      formData.append("image", compressedImage);
+      formData.append("blobKey", blobKey);
       formData.append("message", message);
 
       await submitFind(postId, formData);

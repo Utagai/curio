@@ -19,17 +19,12 @@ export async function createPost(formData: FormData) {
     throw new Error("unreachable: user without username in curio");
   }
 
-  const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
-  const file = formData.get("image");
-
-  if (!(file instanceof File)) {
-    throw new Error("invalid or no file provided");
-  }
-
-  const blobKey = await blobStorage.upload(file);
+  const db = dbFactory();
 
   const title = extractStringValue(formData, "title");
   const description = extractStringValue(formData, "description");
+  // UI should have already uploaded the blob and gotten back a blob key. It should attach it to the form data.
+  const blobKey = extractStringValue(formData, "blobKey");
 
   // Validate title and description are not empty
   if (!title.trim()) {
@@ -135,14 +130,8 @@ export async function submitFind(postId: string, formData: FormData) {
   }
 
   const [db, blobStorage] = [dbFactory(), blobStorageFactory()];
-  const file = formData.get("image");
   const message = extractStringValue(formData, "message");
-
-  if (!(file instanceof File)) {
-    throw new Error("Invalid or no file provided");
-  }
-
-  const blobKey = await blobStorage.upload(file);
+  const blobKey = extractStringValue(formData, "blobKey");
 
   const submission: InsertSubmission = {
     submittedBy: user.username,
@@ -166,7 +155,7 @@ export async function closePost(postId: string) {
   }
 
   const db = dbFactory();
-  
+
   // Get the post to verify the user is the author
   const post = await db.postById(postId);
   if (post.author !== user.username) {

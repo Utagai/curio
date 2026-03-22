@@ -17,3 +17,19 @@ export async function GET(req: NextRequest) {
   resp.headers.set("Content-Type", "image/png");
   return resp;
 }
+
+export async function POST(req: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const formData = await req.formData();
+  const file = formData.get("image");
+  if (!(file instanceof File)) {
+    throw new Error("invalid or no file provided");
+  }
+  const blobKey = await blobStorage.upload(file);
+
+  return new Response(blobKey);
+}

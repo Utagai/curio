@@ -14,7 +14,7 @@ import { DEFAULT_LOC_LATLNG } from "@/app/model/latlng";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import LoadingIndicator from "@/app/components/LoadingIndicator";
-import { compressImage } from "@/utils/imageCompression";
+import { uploadImage } from "@/utils/image";
 
 // Convert feet to degrees (approximately)
 // 1 degree of latitude ≈ 364,000 feet
@@ -189,19 +189,13 @@ export default function ClientPage({ username, token }: ClientPageProps) {
                 setIsSubmitting(true);
 
                 try {
-                  // Compress the image before uploading
-                  const compressedImage = await compressImage(state.imageFile, {
-                    maxWidth: 1500,
-                    maxHeight: 1500,
-                    quality: 0.9,
-                    outputFormat: 'image/jpeg'
-                  });
+                  const blobKey = await uploadImage(state.imageFile);
 
                   const formData = new FormData();
                   formData.append("title", state.title);
+                  formData.append("blobKey", blobKey);
                   formData.append("description", state.description);
                   formData.append("difficulty", state.difficulty);
-                  formData.append("image", compressedImage);
                   formData.append("lat", state.loc.lat.toString());
                   formData.append("lng", state.loc.lng.toString());
                   formData.append("author", state.username!);
@@ -217,7 +211,12 @@ export default function ClientPage({ username, token }: ClientPageProps) {
                   setIsSubmitting(false);
                 }
               }}
-              disabled={isSubmitting || !state.title?.trim() || !state.imageFile || !state.description?.trim()}
+              disabled={
+                isSubmitting ||
+                !state.title?.trim() ||
+                !state.imageFile ||
+                !state.description?.trim()
+              }
               isLoading={isSubmitting}
             >
               Submit
