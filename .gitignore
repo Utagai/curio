@@ -56,3 +56,6 @@ rsrc/mongod/mongod.log
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# daycare
+.daycare/
