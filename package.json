@@ -19,7 +19,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",
     "@tippyjs/react": "^4.2.6",
-    "@vercel/blob": "^1.1.1",
+    "@vercel/blob": "^2.3.1",
     "leaflet": "^1.9.4",
     "mongodb": "^6.3.0",
     "next": "15.5.9",
@@ -38,7 +38,7 @@
     "@types/react-dom": "^19",
     "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.0.1",
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "^14.0.0",
     "dotenv": "^16.3.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
