@@ -14,7 +14,10 @@ export default class VercelBlobStorage implements BlobStorage {
 
   async upload(blob: Blob): Promise<string> {
     const key = path.join(this.prefix, new ObjectId().toString());
-    const putResult = await put(key, blob, { access: "public" });
+    const putResult = await put(key, blob, {
+      access: "private",
+      token: process.env.BLOBS_READ_WRITE_TOKEN!,
+    });
     return Promise.resolve(putResult.url);
   }
 
