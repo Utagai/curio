@@ -12,6 +12,8 @@ This project is a Next.js web application called Curio. It allows users to post 
 
 This approach allows for efficient development cycles where agents handle the implementation and users provide real-world UI feedback.
 
+**Update the changelog**: For any non-trivial, user-facing change, add an entry to the changelog shown on the About page. See the [Changelog](#changelog) section below.
+
 ## Tech Stack
 
 *   **Framework**: Next.js (App Router)
@@ -52,6 +54,9 @@ This approach allows for efficient development cycles where agents handle the im
     *   `SubmissionForm.tsx`: Component for submitting finds to a post (disabled when post is closed).
     *   `Submission.tsx`: Component for displaying individual submissions.
     *   `ClosePostButton.tsx`: Component for closing posts (only visible to post authors).
+*   `src/app/about/`: Contains the About page.
+    *   `page.tsx`: Renders the definition card and the changelog.
+    *   `changelog.ts`: **The changelog data source** (see [Changelog](#changelog)).
 *   `package.json`: Defines the project's dependencies and scripts.
     *   `dev`: Starts the development server with a local MongoDB instance.
     *   `freshdev`: Clears the local database and starts the development server.
@@ -65,6 +70,7 @@ This approach allows for efficient development cycles where agents handle the im
 *   **Adding submission functionality to posts:** Use the existing pattern - extend the database interface, implement in both database classes, add a server action in `actions.ts`, and create UI components that call the action.
 *   **Changing the blob storage provider:** Modify the `blobStorageFactory` in `src/app/api/factory.ts` to return a different implementation of the `IBlobStorage` interface.
 *   **Closing posts:** Posts can be closed by their authors using the `closePost` server action. Closed posts are filtered out by default on the posts page but can be shown using the toggle switch.
+*   **Updating the changelog:** After a non-trivial change, add an entry to `src/app/about/changelog.ts`. See the [Changelog](#changelog) section for the format.
 
 ## Post Closing Feature
 
@@ -86,3 +92,21 @@ Curio includes a post closing feature that allows users to mark posts as no long
 *   Only the original post author can close their own posts
 *   Verification is done server-side using Clerk authentication
 *   Closed posts cannot accept new submissions
+
+## Changelog
+
+Curio displays a user-facing changelog below the definition card on the About page (`/about`).
+
+*   **Data source**: `src/app/about/changelog.ts` exports a `changelog` array of `{ date, changes }` entries.
+*   **Rendering**: `src/app/about/page.tsx` imports the data and renders it. Keep presentation concerns in the page, not in the data file.
+
+### When to update
+
+Update the changelog for any **non-trivial** change, such as a new feature, a user-visible behavior change, a notable bug fix, or a dependency/security change. Skip it for purely internal chores (typos, refactors with no behavior change, CI tweaks).
+
+### How to update
+
+1.  Open `src/app/about/changelog.ts`.
+2.  Add a bullet to the entry for today's date. If there is no entry for today, add a new `{ date: "YYYY-MM-DD", changes: [...] }` object at the **top** of the array (entries are reverse-chronological, newest first).
+3.  Write each change as a short, user-facing sentence. Avoid commit hashes and internal jargon.
+4.  Keep dates as ISO `YYYY-MM-DD` strings — they are formatted for display by the page.
