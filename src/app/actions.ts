@@ -2,9 +2,11 @@
 
 import { Difficulty } from "@/app/model/difficulty";
 import { Post } from "@/app/model/post";
+import { PushSubscriptionKeys } from "@/app/model/pushSubscription";
 import { Submission } from "@/app/model/submission";
 import { blobStorageFactory, dbFactory } from "./api/factory";
 import { InsertPost, InsertSubmission } from "./api/db/interface";
+import { notifyEveryoneExcept, notifyUser } from "./api/push/notify";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export async function createPost(formData: FormData) {
@@ -49,6 +51,12 @@ export async function createPost(formData: FormData) {
   };
 
   const id = await db.insertPost(insert);
+
+  await notifyEveryoneExcept(user.username, {
+    title: "New curio!",
+    body: title,
+    url: `/post/${id}`,
+  });
 
   return { ...insert, id };
 }
@@ -140,6 +148,15 @@ export async function submitFind(postId: string, formData: FormData) {
   };
 
   await db.insertSubmission(postId, submission);
+
+  const post = await db.postById(postId);
+  if (post.author !== user.username) {
+    await notifyUser(post.author, {
+      title: "New find!",
+      body: `${user.username} found your curio "${post.title}"`,
+      url: `/post/${postId}`,
+    });
+  }
 }
 
 export async function closePost(postId: string) {
@@ -163,4 +180,47 @@ export async function closePost(postId: string) {
   }
 
   await db.closePost(postId);
+}
+
+export async function subscribeToPush(subscription: {
+  endpoint: string;
+  keys: PushSubscriptionKeys;
+}) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("unauthorized");
+  }
+
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  if (!user.username) {
+    throw new Error("unreachable: user without username in curio");
+  }
+
+  const db = dbFactory();
+  await db.savePushSubscription({
+    username: user.username,
+    endpoint: subscription.endpoint,
+    keys: subscription.keys,
+  });
+}
+
+export async function unsubscribeFromPush(endpoint: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("unauthorized");
+  }
+
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  if (!user.username) {
+    throw new Error("unreachable: user without username in curio");
+  }
+
+  const db = dbFactory();
+  // Only delete the subscription if it actually belongs to this user.
+  const subscriptions = await db.pushSubscriptionsFor(user.username);
+  if (subscriptions.some((s) => s.endpoint === endpoint)) {
+    await db.deletePushSubscription(endpoint);
+  }
 }

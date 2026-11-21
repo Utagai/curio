@@ -74,7 +74,16 @@ The project follows the standard Next.js App Router structure.
 
     # Vercel Blob Storage
     BLOB_READ_WRITE_TOKEN=
+
+    # Web Push (VAPID). Generate with `npx web-push generate-vapid-keys`.
+    # Keep these stable across deploys; changing them invalidates existing subscriptions.
+    NEXT_PUBLIC_VAPID_PUBLIC_KEY=
+    VAPID_PRIVATE_KEY=
+    VAPID_SUBJECT=mailto:you@example.com
     ```
+
+    The VAPID vars must also be set in the production (Vercel) environment for
+    push notifications to work in the deployed app.
 
 4.  **Run the development server:**
 

@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { Post } from "../../model/post";
+import { PushSubscriptionRecord } from "../../model/pushSubscription";
 import { Submission } from "../../model/submission";
 import Database, { InsertPost, InsertSubmission } from "./interface";
 import * as fs from "fs/promises";
@@ -8,9 +9,13 @@ import * as path from "path";
 const DEFAULT_DB_PATH = path.join("rsrc", "localdb", "default.json");
 const DB_FILE = process.env.CURIO_FILE_DB_PATH || DEFAULT_DB_PATH;
 const DB_DIR = path.dirname(DB_FILE);
+// Push subscriptions live alongside the posts DB, in their own file so we
+// don't have to reshape the existing posts array.
+const SUBS_FILE = path.join(DB_DIR, "subscriptions.json");
 
 export default class FileDB implements Database {
   private posts: Post[] = [];
+  private subscriptions: PushSubscriptionRecord[] = [];
   private initialized: Promise<void>;
 
   constructor() {
@@ -20,6 +25,7 @@ export default class FileDB implements Database {
   private async init(): Promise<void> {
     await fs.mkdir(DB_DIR, { recursive: true });
     this.posts = await this.readDB();
+    this.subscriptions = await this.readSubsDB();
   }
 
   private async readDB(): Promise<Post[]> {
@@ -42,6 +48,23 @@ export default class FileDB implements Database {
 
   private async writeDB() {
     await fs.writeFile(DB_FILE, JSON.stringify(this.posts, null, 2));
+  }
+
+  private async readSubsDB(): Promise<PushSubscriptionRecord[]> {
+    try {
+      const data = await fs.readFile(SUBS_FILE, "utf-8");
+      if (!data) return [];
+      return JSON.parse(data);
+    } catch (error: any) {
+      if (error.code === "ENOENT") {
+        return [];
+      }
+      throw error;
+    }
+  }
+
+  private async writeSubsDB() {
+    await fs.writeFile(SUBS_FILE, JSON.stringify(this.subscriptions, null, 2));
   }
 
   async allPosts(): Promise<Post[]> {
@@ -104,5 +127,40 @@ export default class FileDB implements Database {
     }
     post.closed = true;
     await this.writeDB();
+  }
+
+  async savePushSubscription(
+    subscription: PushSubscriptionRecord,
+  ): Promise<void> {
+    await this.initialized;
+    const index = this.subscriptions.findIndex(
+      (s) => s.endpoint === subscription.endpoint,
+    );
+    if (index >= 0) {
+      this.subscriptions[index] = subscription;
+    } else {
+      this.subscriptions.push(subscription);
+    }
+    await this.writeSubsDB();
+  }
+
+  async deletePushSubscription(endpoint: string): Promise<void> {
+    await this.initialized;
+    this.subscriptions = this.subscriptions.filter(
+      (s) => s.endpoint !== endpoint,
+    );
+    await this.writeSubsDB();
+  }
+
+  async pushSubscriptionsFor(
+    username: string,
+  ): Promise<PushSubscriptionRecord[]> {
+    await this.initialized;
+    return this.subscriptions.filter((s) => s.username === username);
+  }
+
+  async allPushSubscriptions(): Promise<PushSubscriptionRecord[]> {
+    await this.initialized;
+    return this.subscriptions;
   }
 }

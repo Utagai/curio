@@ -18,6 +18,7 @@ export const changelog: ChangelogEntry[] = [
     changes: [
       "Added this changelog to the About page.",
       "Track user's live location while app is open.",
+      "Get push notifications for new curios and finds (enable them on this page).",
     ],
   },
 ];

@@ -1,4 +1,5 @@
 import { changelog } from "./changelog";
+import EnableNotifications from "./EnableNotifications";
 
 const MONTHS = [
   "January",
@@ -32,6 +33,7 @@ export default function About() {
         <p>3. Work in progress.</p>
         <p className="text-center">🚧 🐇 🚧</p>
       </div>
+      <EnableNotifications />
       <section
         aria-labelledby="changelog-heading"
         className="w-full max-w-2xl bg-gray-700 rounded-lg shadow-xl border border-pink-200 m-4 p-6"

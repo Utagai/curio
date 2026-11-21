@@ -1,14 +1,16 @@
-import { Collection, Document, MongoClient, ObjectId } from "mongodb";
+import { Collection, Db, Document, MongoClient, ObjectId } from "mongodb";
 import { Post } from "../../model/post";
+import { PushSubscriptionRecord } from "../../model/pushSubscription";
 import { Submission } from "../../model/submission";
 import Database, { InsertPost, InsertSubmission } from "./interface";
 
 const database = "curio";
 const collection = "posts";
+const subscriptionsCollection = "pushSubscriptions";
 
 let client: MongoClient | null = null;
 
-async function getCollection(): Promise<Collection> {
+async function getDb(): Promise<Db> {
   if (!client) {
     if (!process.env.MONGODB_URI) {
       throw new Error("MONGODB_URI is not set");
@@ -16,7 +18,15 @@ async function getCollection(): Promise<Collection> {
     client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
   }
-  return client.db(database).collection(collection);
+  return client.db(database);
+}
+
+async function getCollection(): Promise<Collection> {
+  return (await getDb()).collection(collection);
+}
+
+async function getSubscriptionsCollection(): Promise<Collection> {
+  return (await getDb()).collection(subscriptionsCollection);
 }
 
 export default class MongoDB implements Database {
@@ -93,6 +103,36 @@ export default class MongoDB implements Database {
       throw new Error(`post not found: '${id}'`);
     }
   }
+
+  async savePushSubscription(
+    subscription: PushSubscriptionRecord,
+  ): Promise<void> {
+    const coll = await getSubscriptionsCollection();
+    await coll.updateOne(
+      { endpoint: subscription.endpoint },
+      { $set: subscription },
+      { upsert: true },
+    );
+  }
+
+  async deletePushSubscription(endpoint: string): Promise<void> {
+    const coll = await getSubscriptionsCollection();
+    await coll.deleteOne({ endpoint });
+  }
+
+  async pushSubscriptionsFor(
+    username: string,
+  ): Promise<PushSubscriptionRecord[]> {
+    const coll = await getSubscriptionsCollection();
+    const docs = await coll.find({ username }).toArray();
+    return docs.map((doc) => subFromDoc(doc));
+  }
+
+  async allPushSubscriptions(): Promise<PushSubscriptionRecord[]> {
+    const coll = await getSubscriptionsCollection();
+    const docs = await coll.find({}).toArray();
+    return docs.map((doc) => subFromDoc(doc));
+  }
 }
 
 function postFromDoc(doc: Document): Post {
@@ -107,5 +147,13 @@ function postFromDoc(doc: Document): Post {
     submittedAt: doc.submittedAt,
     submissions: doc.submissions,
     closed: doc.closed || false,
+  };
+}
+
+function subFromDoc(doc: Document): PushSubscriptionRecord {
+  return {
+    username: doc.username,
+    endpoint: doc.endpoint,
+    keys: doc.keys,
   };
 }
