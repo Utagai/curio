@@ -15,6 +15,9 @@ export type ChangelogEntry = {
 export const changelog: ChangelogEntry[] = [
   {
     date: "2026-11-21",
-    changes: ["Added this changelog to the About page."],
+    changes: [
+      "Added this changelog to the About page.",
+      "Track user's live location while app is open.",
+    ],
   },
 ];
