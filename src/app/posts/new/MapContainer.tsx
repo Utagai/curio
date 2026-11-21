@@ -13,12 +13,14 @@ type MapContainerProps = {
   onMarkerChange?: (loc: Latlng) => void;
   clickable: boolean;
   initialLocation?: Latlng;
+  showUserLocation?: boolean;
 };
 
 export default function MapContainer({
   onMarkerChange,
   clickable,
   initialLocation,
+  showUserLocation,
 }: MapContainerProps) {
   const Map = useMemo(
     () =>
@@ -35,6 +37,7 @@ export default function MapContainer({
           onMarkerChange={onMarkerChange}
           clickable={clickable}
           initialLocation={initialLocation}
+          showUserLocation={showUserLocation}
         />
       </div>
     </div>

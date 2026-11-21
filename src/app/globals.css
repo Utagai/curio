@@ -50,6 +50,59 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+/* "Show my location" button rendered as a Leaflet control. */
+.curio-locate-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 9999px;
+  border: 2px solid #f9a8d4;
+  background-color: rgba(17, 24, 39, 0.9);
+  color: #f9a8d4;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease,
+    opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.curio-locate-button:hover {
+  background-color: rgba(55, 65, 81, 0.95);
+}
+
+.curio-locate-button:active {
+  transform: scale(0.94);
+}
+
+.curio-locate-button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.curio-locate-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.curio-locate-button.is-locating svg {
+  animation: curio-locate-pulse 1s ease-in-out infinite;
+}
+
+@keyframes curio-locate-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
 .btn-submit {
   background-color: rgb(17, 39, 21);
   border: 3px solid rgb(47, 66, 50);
